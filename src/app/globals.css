@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  /* Soft Signal — colour tokens */
+  --color-background: #F5F3EF; /* warm off-white — the GXSC fog */
+  --color-ink: #2C2C2C;        /* near-black — all text */
+  --color-signal: #5A8FA0;     /* geometric elements only, never text */
+  --color-mist: #9A9A9A;       /* secondary text, borders */
+  --color-dust-tan: #B5A08A;   /* warm accent */
+  --color-dust-sage: #8A9E8C;  /* secondary accent */
+
+  /* Soft Signal — typography */
+  --font-serif: Georgia, serif;
+  --font-sans: Inter, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-ink);
+}
