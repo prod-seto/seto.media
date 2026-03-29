@@ -8,23 +8,14 @@ export default function Home() {
 
         {/* ── Hero ──────────────────────────────────────────── */}
         <header className="mb-16">
-          <p
-            className="font-mono text-[10px] text-faint tracking-[3px] uppercase mb-6 label-diamond"
-          >
-            seto.media
-          </p>
           <h1
-            className="font-sans font-light text-fog mb-4"
-            style={{ fontSize: "42px", letterSpacing: "-0.5px", lineHeight: 1.1 }}
+            className="font-sans font-light text-fog mb-5"
+            style={{ fontSize: "52px", letterSpacing: "-0.5px", lineHeight: 1.1 }}
           >
-            music releases,{" "}
-            <em className="not-italic text-signal">beats,</em>
-            <br />
-            and producer tools.
+            seto<em style={{ fontStyle: "italic", color: "#7AB0C4" }}>.media</em>
           </h1>
-          <p className="font-sans font-light text-muted text-sm leading-relaxed max-w-md mt-4">
-            A catalogue of original work and utilities for producers.
-            Everything released here is made under the seto.media imprint.
+          <p className="font-mono text-[10px] text-faint tracking-[3px] uppercase label-diamond">
+            music releases · beats · producer tools
           </p>
         </header>
 
