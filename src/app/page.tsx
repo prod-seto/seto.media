@@ -3,7 +3,7 @@ import { Divider } from "@/components/Divider";
 
 export default function Home() {
   return (
-    <div className="min-h-screen grid-underlay">
+    <div className="min-h-screen">
       <main className="max-w-[900px] mx-auto px-8 py-24">
 
         {/* ── Hero ──────────────────────────────────────────── */}
