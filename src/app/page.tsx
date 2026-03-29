@@ -3,48 +3,92 @@ import { Divider } from "@/components/Divider";
 
 export default function Home() {
   return (
-    <main className="max-w-2xl mx-auto px-8 py-24">
-      <header className="mb-16">
-        <h1 className="font-serif text-4xl text-ink tracking-tight mb-3">
-          seto.media
-        </h1>
-        <p className="font-sans text-sm text-mist tracking-widest uppercase">
-          music releases · beats · producer tools
-        </p>
-      </header>
+    <div className="min-h-screen grid-underlay">
+      <main className="max-w-[900px] mx-auto px-8 py-24">
 
-      <Divider />
-
-      <section className="my-4">
-        <BracketCard>
-          <h2 className="font-serif text-xl text-ink mb-2">Releases</h2>
-          <p className="font-sans text-sm text-mist">
-            Music coming soon.
+        {/* ── Hero ──────────────────────────────────────────── */}
+        <header className="mb-16">
+          <p
+            className="font-mono text-[10px] text-faint tracking-[3px] uppercase mb-6 label-diamond"
+          >
+            seto.media
           </p>
-        </BracketCard>
-      </section>
-
-      <Divider />
-
-      <section className="my-4">
-        <BracketCard>
-          <h2 className="font-serif text-xl text-ink mb-2">Beats</h2>
-          <p className="font-sans text-sm text-mist">
-            Beat catalog coming soon.
+          <h1
+            className="font-sans font-light text-fog mb-4"
+            style={{ fontSize: "42px", letterSpacing: "-0.5px", lineHeight: 1.1 }}
+          >
+            music releases,{" "}
+            <em className="not-italic text-signal">beats,</em>
+            <br />
+            and producer tools.
+          </h1>
+          <p className="font-sans font-light text-muted text-sm leading-relaxed max-w-md mt-4">
+            A catalogue of original work and utilities for producers.
+            Everything released here is made under the seto.media imprint.
           </p>
-        </BracketCard>
-      </section>
+        </header>
 
-      <Divider />
+        <Divider />
 
-      <section className="my-4">
-        <BracketCard>
-          <h2 className="font-serif text-xl text-ink mb-2">Tools</h2>
-          <p className="font-sans text-sm text-mist">
-            Producer tools coming soon.
-          </p>
-        </BracketCard>
-      </section>
-    </main>
+        {/* ── Releases ──────────────────────────────────────── */}
+        <section className="my-12">
+          <BracketCard>
+            <p className="font-mono text-[9px] text-faint tracking-[2.5px] uppercase mb-4 label-diamond">
+              Releases
+            </p>
+            <h2
+              className="font-sans font-light text-fog mb-3"
+              style={{ fontSize: "22px", letterSpacing: "-0.3px" }}
+            >
+              Music
+            </h2>
+            <p className="font-sans font-light text-body text-sm leading-[1.75]">
+              Original releases coming soon.
+            </p>
+          </BracketCard>
+        </section>
+
+        <Divider />
+
+        {/* ── Beats ─────────────────────────────────────────── */}
+        <section className="my-12">
+          <BracketCard>
+            <p className="font-mono text-[9px] text-faint tracking-[2.5px] uppercase mb-4 label-diamond">
+              Beats
+            </p>
+            <h2
+              className="font-sans font-light text-fog mb-3"
+              style={{ fontSize: "22px", letterSpacing: "-0.3px" }}
+            >
+              Beat Catalog
+            </h2>
+            <p className="font-sans font-light text-body text-sm leading-[1.75]">
+              Instrumentals and beat packs coming soon.
+            </p>
+          </BracketCard>
+        </section>
+
+        <Divider />
+
+        {/* ── Tools ─────────────────────────────────────────── */}
+        <section className="my-12">
+          <BracketCard>
+            <p className="font-mono text-[9px] text-faint tracking-[2.5px] uppercase mb-4 label-diamond">
+              Tools
+            </p>
+            <h2
+              className="font-sans font-light text-fog mb-3"
+              style={{ fontSize: "22px", letterSpacing: "-0.3px" }}
+            >
+              Producer Tools
+            </h2>
+            <p className="font-sans font-light text-body text-sm leading-[1.75]">
+              Utilities for music production coming soon.
+            </p>
+          </BracketCard>
+        </section>
+
+      </main>
+    </div>
   );
 }

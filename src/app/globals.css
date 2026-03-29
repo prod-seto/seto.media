@@ -1,20 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  /* Soft Signal — colour tokens */
-  --color-background: #F5F3EF; /* warm off-white — the GXSC fog */
-  --color-ink: #2C2C2C;        /* near-black — all text */
-  --color-signal: #5A8FA0;     /* geometric elements only, never text */
-  --color-mist: #9A9A9A;       /* secondary text, borders */
-  --color-dust-tan: #B5A08A;   /* warm accent */
-  --color-dust-sage: #8A9E8C;  /* secondary accent */
+  /* ─── Soft Signal Inverted ── colour tokens ─────────────────────── */
 
-  /* Soft Signal — typography */
-  --font-serif: Georgia, serif;
-  --font-sans: Inter, system-ui, sans-serif;
+  /* Backgrounds — darkest to lightest */
+  --color-midnight: #1C1B18;
+  --color-deep:     #242320;
+  --color-dusk:     #2E2D29;
+  --color-charcoal: #3A3834;
+
+  /* Text */
+  --color-fog:   #F0EDE8;
+  --color-body:  #D4D0C8;
+  --color-muted: #A8A49C;
+  --color-faint: #706D66;
+
+  /* Accents */
+  --color-sage:        #8AAB8E;
+  --color-sage-light:  #B4CDB8;
+  --color-signal:      #7AB0C4;
+  --color-signal-light:#B0D0DC;
+  --color-clay:        #B09880;
+  --color-clay-light:  #CBB8A4;
+
+  /* Special surface */
+  --color-infobox: #1A2A30;
+
+  /* ─── Typography ────────────────────────────────────────────────── */
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), 'Courier New', monospace;
 }
 
+/* ─── Base ──────────────────────────────────────────────────────── */
 body {
-  background-color: var(--color-background);
-  color: var(--color-ink);
+  background-color: var(--color-midnight);
+  color: var(--color-body);
+}
+
+/* ─── Grid underlay ─────────────────────────────────────────────── */
+.grid-underlay {
+  background-image:
+    linear-gradient(rgba(122,176,196,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122,176,196,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Section label diamond prefix ─────────────────────────────── */
+.label-diamond::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border: 1px solid rgba(122,176,196,0.70);
+  transform: rotate(45deg);
+  margin-right: 8px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
