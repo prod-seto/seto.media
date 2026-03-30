@@ -1,74 +1,140 @@
 @import "tailwindcss";
 
 @theme {
-  /* ─── Soft Signal Inverted ── colour tokens ─────────────────────── */
+  /* ── Contemporary Soft Club — colour tokens ───────────────────── */
 
-  /* Backgrounds — darkest to lightest */
-  --color-midnight: #1C1B18;
-  --color-deep:     #242320;
-  --color-dusk:     #2E2D29;
-  --color-charcoal: #3A3834;
-
-  /* Text */
-  --color-fog:   #F0EDE8;
-  --color-body:  #D4D0C8;
-  --color-muted: #A8A49C;
-  --color-faint: #706D66;
+  /* Backgrounds */
+  --color-wash:     #EEF4F8;
+  --color-ice:      #DCEEF7;
+  --color-haze:     #C8E2F0;
+  --color-mist:     #B0D2E8;
 
   /* Accents */
-  --color-sage:        #8AAB8E;
-  --color-sage-light:  #B4CDB8;
-  --color-signal:      #7AB0C4;
-  --color-signal-light:#B0D0DC;
-  --color-clay:        #B09880;
-  --color-clay-light:  #CBB8A4;
+  --color-blue:        #5A9ED4;
+  --color-blue-dark:   #2A6094;
+  --color-teal:        #6AB8B0;
+  --color-teal-light:  #A8D8D0;
+  --color-teal-dark:   #3A8880;
+  --color-lavender:    #CCD4E8;
+  --color-lav-dark:    #8898C0;
 
-  /* Special surface */
-  --color-infobox: #1A2A30;
+  /* Text */
+  --color-navy:  #1A3A50;
+  --color-mid:   #2E6080;
+  --color-faint: #5A8AAA;
 
-  /* ─── Typography ────────────────────────────────────────────────── */
-  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-  --font-mono: var(--font-dm-mono), 'Courier New', monospace;
+  /* ── Typography ─────────────────────────────────────────────────── */
+  --font-display: var(--font-orbitron), 'Segoe UI', system-ui, sans-serif;
+  --font-sans:    var(--font-exo2), system-ui, sans-serif;
+  --font-mono:    var(--font-share-tech-mono), 'Courier New', monospace;
 }
 
-/* ─── Base ──────────────────────────────────────────────────────── */
+/* ── Base ───────────────────────────────────────────────────────── */
 body {
-  background-color: var(--color-midnight);
-  color: var(--color-body);
+  background: #EEF4F8;
+  color: #2E6080;
 }
 
-/* ─── Page grain (fractal noise, screen blend) ──────────────────── */
-/* Grain at page level — grid at panel level. Never reverse this.   */
+/* ── Overexposed icy wash overlay (sits below all content) ──────── */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.12;
-  mix-blend-mode: screen;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(200,230,248,0.30) 40%,
+    rgba(168,216,208,0.25) 70%,
+    rgba(200,212,240,0.30) 100%
+  );
 }
 
-/* ─── Panel-level grid (data/technical panels only) ─────────────── */
-.data-panel {
-  background-image:
-    linear-gradient(rgba(122,176,196,0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(122,176,196,0.09) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* ─── Section label diamond prefix ─────────────────────────────── */
-.label-diamond::before {
-  content: '';
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  border: 1px solid rgba(122,176,196,0.70);
-  transform: rotate(45deg);
-  margin-right: 8px;
-  vertical-align: middle;
+/* ── Ghost panel — standard card / panel ────────────────────────── */
+/* TL bracket via ::before, BR bracket via ::after                   */
+.ghost-panel {
+  background: rgba(255,255,255,0.40);
+  border: 1px solid rgba(90,158,212,0.35);
   position: relative;
-  top: -1px;
+}
+
+.ghost-panel::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px;
+  width: 12px; height: 12px;
+  border-top:  1px solid rgba(90,158,212,0.50);
+  border-left: 1px solid rgba(90,158,212,0.50);
+  pointer-events: none;
+}
+
+.ghost-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 6px; right: 6px;
+  width: 12px; height: 12px;
+  border-bottom: 1px solid rgba(90,158,212,0.50);
+  border-right:  1px solid rgba(90,158,212,0.50);
+  pointer-events: none;
+}
+
+/* ── Hero panel — ghost frame + left-edge code column ───────────── */
+/* ::before = code column, ::after = BR corner bracket               */
+.hero-panel {
+  background: rgba(255,255,255,0.40);
+  border: 1px solid rgba(90,158,212,0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-panel::before {
+  content: 'GEN X · 00001 · YOUNG ADULT · 10110 · CONTEMPORARY · 01001 · SOFT CLUB · 11010 · TRANSIT · 00110 · SIGNAL · 10001 · PLATFORM · 01110 · 2001 · 11001';
+  position: absolute;
+  top: 0; left: 0;
+  width: 28px;
+  height: 100%;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  color: #5A9ED4;
+  opacity: 0.35;
+  writing-mode: vertical-rl;
+  overflow: hidden;
+  letter-spacing: 1px;
+  padding: 4px 2px;
+  word-break: break-all;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.hero-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 6px; right: 6px;
+  width: 16px; height: 16px;
+  border-bottom: 1px solid rgba(90,158,212,0.50);
+  border-right:  1px solid rgba(90,158,212,0.50);
+  pointer-events: none;
+}
+
+/* ── Data readout (decorative monospace clusters) ───────────────── */
+.data-readout {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: rgba(90,158,212,0.45);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Tag / badge ─────────────────────────────────────────────────── */
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid rgba(90,158,212,0.35);
+  background: rgba(90,158,212,0.10);
+  color: #2A6094;
 }
