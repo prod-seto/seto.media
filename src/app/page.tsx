@@ -1,19 +1,29 @@
-import { BracketCard } from "@/components/BracketCard";
 import { Divider } from "@/components/Divider";
+import { HomeCatalog } from "@/components/HomeCatalog";
+import { supabase } from "@/lib/supabase";
 
 const display: React.CSSProperties = {
   fontFamily: "var(--font-orbitron), sans-serif",
-};
-
-const mono: React.CSSProperties = {
-  fontFamily: "var(--font-share-tech-mono), monospace",
 };
 
 const body: React.CSSProperties = {
   fontFamily: "var(--font-exo2), sans-serif",
 };
 
-export default function Home() {
+export default async function Home() {
+  const [{ data: releases }, { data: beats }] = await Promise.all([
+    supabase
+      .from("releases")
+      .select("*")
+      .eq("is_visible", true)
+      .order("released_at", { ascending: false }),
+    supabase
+      .from("beats")
+      .select("*")
+      .eq("is_visible", true)
+      .order("created_at", { ascending: false }),
+  ]);
+
   return (
     <main style={{ maxWidth: "960px", margin: "0 auto", padding: "48px 40px 80px" }}>
 
@@ -62,74 +72,9 @@ export default function Home() {
         </div>
       </header>
 
-      <Divider label="01 · CATALOG" />
+      <Divider label="CATALOG" />
 
-      {/* ── Releases ──────────────────────────────────────────── */}
-      <section style={{ marginBottom: "0" }}>
-        <BracketCard>
-          <p
-            style={{ ...mono, fontSize: "9px", letterSpacing: "2.5px", color: "#5A8AAA",
-              textTransform: "uppercase", marginBottom: "10px" }}
-          >
-            01 · RELEASES
-          </p>
-          <h2
-            style={{ ...display, fontSize: "18px", fontWeight: 700, letterSpacing: "2px",
-              color: "#2A6094", textTransform: "uppercase", marginBottom: "10px" }}
-          >
-            MUSIC
-          </h2>
-          <p style={{ ...body, fontSize: "13px", fontWeight: 300, lineHeight: 1.75, color: "#2E6080" }}>
-            Original releases coming soon.
-          </p>
-        </BracketCard>
-      </section>
-
-      <Divider label="02 · CATALOG" />
-
-      {/* ── Beats ──────────────────────────────────────────────── */}
-      <section>
-        <BracketCard>
-          <p
-            style={{ ...mono, fontSize: "9px", letterSpacing: "2.5px", color: "#5A8AAA",
-              textTransform: "uppercase", marginBottom: "10px" }}
-          >
-            02 · BEATS
-          </p>
-          <h2
-            style={{ ...display, fontSize: "18px", fontWeight: 700, letterSpacing: "2px",
-              color: "#2A6094", textTransform: "uppercase", marginBottom: "10px" }}
-          >
-            BEAT CATALOG
-          </h2>
-          <p style={{ ...body, fontSize: "13px", fontWeight: 300, lineHeight: 1.75, color: "#2E6080" }}>
-            Instrumentals and beat packs coming soon.
-          </p>
-        </BracketCard>
-      </section>
-
-      <Divider label="03 · CATALOG" />
-
-      {/* ── Tools ──────────────────────────────────────────────── */}
-      <section>
-        <BracketCard>
-          <p
-            style={{ ...mono, fontSize: "9px", letterSpacing: "2.5px", color: "#5A8AAA",
-              textTransform: "uppercase", marginBottom: "10px" }}
-          >
-            03 · TOOLS
-          </p>
-          <h2
-            style={{ ...display, fontSize: "18px", fontWeight: 700, letterSpacing: "2px",
-              color: "#2A6094", textTransform: "uppercase", marginBottom: "10px" }}
-          >
-            PRODUCER TOOLS
-          </h2>
-          <p style={{ ...body, fontSize: "13px", fontWeight: 300, lineHeight: 1.75, color: "#2E6080" }}>
-            Utilities for music production coming soon.
-          </p>
-        </BracketCard>
-      </section>
+      <HomeCatalog beats={beats ?? []} releases={releases ?? []} />
 
     </main>
   );

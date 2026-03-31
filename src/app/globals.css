@@ -138,3 +138,29 @@ body::before {
   background: rgba(90,158,212,0.10);
   color: #2A6094;
 }
+
+/* ── Catalog grid — two columns desktop, single column mobile ── */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.mobile-tabs {
+  display: none;
+}
+
+@media (max-width: 680px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-tabs {
+    display: flex;
+  }
+
+  .catalog-col-hidden {
+    display: none;
+  }
+}
