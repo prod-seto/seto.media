@@ -139,6 +139,12 @@ body::before {
   color: #2A6094;
 }
 
+/* ── Audio visualizer bar animation ────────────────────────── */
+@keyframes vizbar {
+  from { transform: scaleY(0.08); }
+  to   { transform: scaleY(1); }
+}
+
 /* ── Catalog grid — two columns desktop, single column mobile ── */
 .catalog-grid {
   display: grid;

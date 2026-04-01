@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Orbitron, Exo_2, Share_Tech_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const orbitron = Orbitron({
@@ -38,6 +39,7 @@ export default function RootLayout({
         style={{ background: "#EEF4F8", color: "#2E6080" }}
       >
         {/* z-index: 1 keeps content above the body::before wash overlay */}
+        <Script src="https://w.soundcloud.com/player/api.js" strategy="afterInteractive" />
         <div style={{ position: "relative", zIndex: 1 }}>
           {children}
         </div>

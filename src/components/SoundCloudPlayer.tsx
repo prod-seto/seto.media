@@ -1,0 +1,175 @@
+"use client";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+
+declare global {
+  interface Window { SC: any }
+}
+
+let currentWidget: any = null;
+
+function formatTime(ms: number) {
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  return `${m}:${String(s % 60).padStart(2, "0")}`;
+}
+
+const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
+
+export interface SoundCloudPlayerRef {
+  seek: (pct: number) => void;
+}
+
+interface Props {
+  url: string;
+  onPlayStateChange?: (playing: boolean) => void;
+  onWaveformUrl?: (url: string) => void;
+  onProgress?: (relativePosition: number) => void;
+}
+
+export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
+  function SoundCloudPlayer({ url, onPlayStateChange, onWaveformUrl, onProgress }, ref) {
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    const widgetRef = useRef<any>(null);
+    const durationRef = useRef<number>(0);
+    const [ready, setReady] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [position, setPosition] = useState(0);
+    const [duration, setDuration] = useState(0);
+
+    useImperativeHandle(ref, () => ({
+      seek(pct: number) {
+        if (widgetRef.current && durationRef.current) {
+          widgetRef.current.seekTo(Math.floor(pct * durationRef.current));
+        }
+      },
+    }));
+
+    useEffect(() => {
+      let attempts = 0;
+      const init = setInterval(() => {
+        if (window.SC && iframeRef.current) {
+          clearInterval(init);
+          const widget = window.SC.Widget(iframeRef.current);
+          widgetRef.current = widget;
+
+          widget.bind(window.SC.Widget.Events.READY, () => {
+            widget.getDuration((d: number) => {
+              setDuration(d);
+              durationRef.current = d;
+            });
+            widget.getCurrentSound((sound: any) => {
+              if (sound?.waveform_url) onWaveformUrl?.(sound.waveform_url);
+            });
+            setReady(true);
+          });
+          widget.bind(window.SC.Widget.Events.PLAY, () => {
+            setIsPlaying(true);
+            onPlayStateChange?.(true);
+          });
+          widget.bind(window.SC.Widget.Events.PAUSE, () => {
+            setIsPlaying(false);
+            onPlayStateChange?.(false);
+          });
+          widget.bind(window.SC.Widget.Events.FINISH, () => {
+            setIsPlaying(false);
+            onPlayStateChange?.(false);
+            setPosition(0);
+            onProgress?.(0);
+          });
+          widget.bind(window.SC.Widget.Events.PLAY_PROGRESS, (e: any) => {
+            setPosition(e.currentPosition);
+            onProgress?.(e.relativePosition);
+          });
+        }
+        if (++attempts > 50) clearInterval(init);
+      }, 100);
+
+      return () => clearInterval(init);
+    }, []);
+
+    function toggle() {
+      if (!widgetRef.current || !ready) return;
+      if (!isPlaying && currentWidget && currentWidget !== widgetRef.current) {
+        currentWidget.pause();
+      }
+      if (!isPlaying) currentWidget = widgetRef.current;
+      widgetRef.current.toggle();
+    }
+
+    function seekFromBar(e: React.MouseEvent<HTMLDivElement>) {
+      if (!widgetRef.current || !durationRef.current || !ready) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      widgetRef.current.seekTo(Math.floor(pct * durationRef.current));
+    }
+
+    const progress = duration > 0 ? (position / duration) * 100 : 0;
+
+    return (
+      <div style={{ position: "relative" }}>
+        <iframe
+          ref={iframeRef}
+          src={`https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false&show_comments=false&show_playcount=false&show_user=false`}
+          style={{ position: "absolute", width: 0, height: 0, border: 0 }}
+          allow="autoplay"
+        />
+
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {/* Play / Pause */}
+          <button
+            onClick={toggle}
+            disabled={!ready}
+            className="tag"
+            style={{
+              cursor: ready ? "pointer" : "default",
+              opacity: ready ? 1 : 0.35,
+              background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
+              borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
+              color: "#2A6094",
+              flexShrink: 0,
+              letterSpacing: "2px",
+              minWidth: "64px",
+            }}
+          >
+            {isPlaying ? "⏸ PAUSE" : "▶ PLAY"}
+          </button>
+
+          {/* Progress bar + times */}
+          <div style={{ flex: 1 }}>
+            {/* Clickable line */}
+            <div
+              onClick={seekFromBar}
+              style={{
+                height: "2px",
+                background: "rgba(90,158,212,0.20)",
+                cursor: ready && duration > 0 ? "pointer" : "default",
+                position: "relative",
+                marginBottom: "5px",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0, top: 0,
+                  height: "100%",
+                  width: `${progress}%`,
+                  background: "#5A9ED4",
+                  transition: "width 0.25s linear",
+                }}
+              />
+            </div>
+            {/* Times */}
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ ...mono, fontSize: "8px", color: "#5A8AAA", letterSpacing: "1px" }}>
+                {duration > 0 ? formatTime(position) : "—"}
+              </span>
+              <span style={{ ...mono, fontSize: "8px", color: "#5A8AAA", letterSpacing: "1px" }}>
+                {duration > 0 ? formatTime(duration) : "—"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
