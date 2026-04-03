@@ -79,6 +79,35 @@ body::before {
   pointer-events: none;
 }
 
+/* ── Tracklist panel — ghost frame with bracket framing play column  */
+/* TL bracket aligns with row padding so it frames the play button   */
+.tracklist-panel {
+  background: rgba(255,255,255,0.40);
+  border: 1px solid rgba(90,158,212,0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.tracklist-panel::before {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 16px; height: 16px;
+  border-top:  1px solid rgba(90,158,212,0.50);
+  border-left: 1px solid rgba(90,158,212,0.50);
+  pointer-events: none;
+}
+
+.tracklist-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 6px; right: 6px;
+  width: 12px; height: 12px;
+  border-bottom: 1px solid rgba(90,158,212,0.50);
+  border-right:  1px solid rgba(90,158,212,0.50);
+  pointer-events: none;
+}
+
 /* ── Hero panel — ghost frame + left-edge code column ───────────── */
 /* ::before = code column, ::after = BR corner bracket               */
 .hero-panel {

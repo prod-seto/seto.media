@@ -1,7 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import type { Beat } from "@/lib/types";
-import { BeatCard } from "./BeatCard";
+import { BeatRow } from "./BeatCard";
 
 const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
 const body: React.CSSProperties = { fontFamily: "var(--font-exo2), sans-serif" };
@@ -83,16 +83,20 @@ export function BeatsCatalog({ beats }: { beats: Beat[] }) {
         </p>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        {filtered.map((b) => (
-          <BeatCard
-            key={b.id}
-            beat={b}
-            activeTags={activeTags}
-            onTagToggle={toggleTag}
-          />
-        ))}
-      </div>
+      {filtered.length > 0 && (
+        <div className="ghost-panel" style={{ overflow: "hidden" }}>
+          {filtered.map((b, i) => (
+            <BeatRow
+              key={b.id}
+              beat={b}
+              activeTags={activeTags}
+              onTagToggle={toggleTag}
+              isFirst={i === 0}
+              isLast={i === filtered.length - 1}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
