@@ -5,6 +5,7 @@ import { BeatRow } from "./BeatCard";
 
 const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
 const body: React.CSSProperties = { fontFamily: "var(--font-exo2), sans-serif" };
+// mono is used by the × CLEAR button and filter tags
 
 export function BeatsCatalog({ beats }: { beats: Beat[] }) {
   const [activeTags, setActiveTags] = useState<string[]>([]);
@@ -30,10 +31,11 @@ export function BeatsCatalog({ beats }: { beats: Beat[] }) {
 
   return (
     <div>
-      <p style={{ ...mono, fontSize: "8px", letterSpacing: "3px", color: "#5A8AAA",
+      <h2 style={{ fontFamily: "var(--font-orbitron), sans-serif", fontSize: "16px",
+        fontWeight: 700, letterSpacing: "2px", color: "#2A6094",
         textTransform: "uppercase", marginBottom: "16px" }}>
-        02 · BEATS
-      </p>
+        BEATS
+      </h2>
 
       {allTags.length > 0 && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px",

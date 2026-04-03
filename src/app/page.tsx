@@ -1,4 +1,3 @@
-import { Divider } from "@/components/Divider";
 import { HomeCatalog } from "@/components/HomeCatalog";
 import { supabase } from "@/lib/supabase";
 
@@ -71,8 +70,6 @@ export default async function Home() {
           </p>
         </div>
       </header>
-
-      <Divider label="CATALOG" />
 
       <HomeCatalog beats={beats ?? []} releases={releases ?? []} />
 
