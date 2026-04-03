@@ -201,7 +201,7 @@ export function BeatRow({
 
         <h3 style={{
           ...display,
-          fontSize: "11px",
+          fontSize: "13px",
           fontWeight: 700,
           letterSpacing: "1.5px",
           color: isPlaying ? "#2A6094" : "#3A7AAA",
@@ -229,9 +229,9 @@ export function BeatRow({
                     background: active ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.06)",
                     borderColor: active ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.25)",
                     color: active ? "#2A6094" : "#7AAAC4",
-                    padding: "1px 6px",
-                    fontSize: "7px",
-                    letterSpacing: "1px",
+                    padding: "2px 7px",
+                    fontSize: "9px",
+                    letterSpacing: "1.5px",
                   }}
                 >
                   {tag}
