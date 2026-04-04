@@ -15,12 +15,12 @@ export default async function Home() {
       .from("releases")
       .select("*")
       .eq("is_visible", true)
-      .order("released_at", { ascending: false }),
+      .order("sort_order", { ascending: true }),
     supabase
       .from("beats")
       .select("*")
       .eq("is_visible", true)
-      .order("created_at", { ascending: false }),
+      .order("sort_order", { ascending: true }),
   ]);
 
   return (

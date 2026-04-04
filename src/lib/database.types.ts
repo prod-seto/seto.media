@@ -25,6 +25,7 @@ export type Database = {
           is_visible: boolean
           key: string | null
           slug: string
+          sort_order: number
           tags: string[]
           title: string
         }
@@ -38,6 +39,7 @@ export type Database = {
           is_visible?: boolean
           key?: string | null
           slug: string
+          sort_order?: number
           tags?: string[]
           title: string
         }
@@ -51,6 +53,7 @@ export type Database = {
           is_visible?: boolean
           key?: string | null
           slug?: string
+          sort_order?: number
           tags?: string[]
           title?: string
         }
@@ -65,6 +68,7 @@ export type Database = {
           is_visible: boolean
           released_at: string | null
           slug: string
+          sort_order: number
           soundcloud_url: string | null
           title: string
           type: string
@@ -77,6 +81,7 @@ export type Database = {
           is_visible?: boolean
           released_at?: string | null
           slug: string
+          sort_order?: number
           soundcloud_url?: string | null
           title: string
           type: string
@@ -89,6 +94,7 @@ export type Database = {
           is_visible?: boolean
           released_at?: string | null
           slug?: string
+          sort_order?: number
           soundcloud_url?: string | null
           title?: string
           type?: string
