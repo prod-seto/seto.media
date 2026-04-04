@@ -168,6 +168,87 @@ body::before {
   color: #2A6094;
 }
 
+/* ── PS2 disk card ──────────────────────────────────────────── */
+.disk-wrapper {
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.disk-face {
+  clip-path: circle(50%);
+  background: conic-gradient(
+    rgba(90,158,212,0.55)  0deg,
+    rgba(168,216,208,0.50) 90deg,
+    rgba(200,212,240,0.60) 180deg,
+    rgba(106,184,176,0.45) 270deg,
+    rgba(90,158,212,0.55)  360deg
+  );
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  overflow: hidden;
+  transition: filter 0.15s ease;
+}
+
+.disk-wrapper:hover .disk-face {
+  filter: brightness(1.08);
+}
+
+.disk-artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.82;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.disk-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18%;
+  aspect-ratio: 1;
+  clip-path: circle(50%);
+  background: rgba(238,244,248,0.80);
+  border: 1px solid rgba(90,158,212,0.40);
+  pointer-events: none;
+}
+
+.disk-label {
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ── Tools grid ─────────────────────────────────────────────── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+@media (max-width: 680px) {
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 440px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── Audio visualizer bar animation ────────────────────────── */
 @keyframes vizbar {
   from { transform: scaleY(0.08); }

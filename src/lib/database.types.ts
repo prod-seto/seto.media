@@ -101,6 +101,45 @@ export type Database = {
         }
         Relationships: []
       }
+      tools: {
+        Row: {
+          created_at: string
+          description: string | null
+          disk_font: string
+          disk_font_color: string
+          disk_image_url: string | null
+          id: string
+          is_visible: boolean
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          disk_font?: string
+          disk_font_color?: string
+          disk_image_url?: string | null
+          id?: string
+          is_visible?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          disk_font?: string
+          disk_font_color?: string
+          disk_image_url?: string | null
+          id?: string
+          is_visible?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron, Exo_2, Share_Tech_Mono } from "next/font/google";
+import { Orbitron, Exo_2, Share_Tech_Mono, Turret_Road, Chakra_Petch, Teko } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -22,6 +22,24 @@ const shareTechMono = Share_Tech_Mono({
   variable: "--font-share-tech-mono",
 });
 
+const turretRoad = Turret_Road({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-turret-road",
+});
+
+const chakraPetch = Chakra_Petch({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-chakra-petch",
+});
+
+const teko = Teko({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-teko",
+});
+
 export const metadata: Metadata = {
   title: "seto.media",
   description: "Music releases, beats, and producer tools.",
@@ -35,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} ${exo2.variable} ${shareTechMono.variable} antialiased`}
+        className={`${orbitron.variable} ${exo2.variable} ${shareTechMono.variable} ${turretRoad.variable} ${chakraPetch.variable} ${teko.variable} antialiased`}
         style={{ background: "#EEF4F8", color: "#2E6080" }}
       >
         {/* z-index: 1 keeps content above the body::before wash overlay */}
