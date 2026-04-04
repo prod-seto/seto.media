@@ -3,14 +3,14 @@
 Auto-generated from all feature plans. Last updated: 2026-04-03
 
 ## Active Technologies
-- TypeScript 5 / Next.js 16.2.1 App Router + React 19, Supabase JS clien (002-beats-list-redesign)
-- Supabase (no schema changes in this feature) (002-beats-list-redesign)
 
-- TypeScript 5 / Next.js 16.2.1 + React 19, Tailwind CSS v4 (`@theme` directive) (001-ui-readability)
+- TypeScript 5 / Next.js 16.2.1 App Router + React 19, Tailwind CSS v4 (`@theme` directive), `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (new) (003-admin-auth-ingestion)
+- Supabase (no schema changes in this feature) (002-beats-list-redesign)
 
 ## Project Structure
 
 ```text
+src/
 backend/
 frontend/
 tests/
@@ -22,6 +22,13 @@ npm test && npm run lint
 
 ## Code Style
 
+TypeScript 5 / Next.js 16.2.1 App Router: Follow standard conventions
+
+## Recent Changes
+
+- 003-admin-auth-ingestion: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (new)
+
+<!-- MANUAL ADDITIONS START -->
 TypeScript 5 / Next.js 16.2.1: Follow standard conventions
 
 ## Recent Changes
