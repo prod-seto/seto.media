@@ -5,6 +5,8 @@ Auto-generated from all feature plans. Last updated: 2026-04-04
 ## Active Technologies
 - TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing) (004-soundcloud-autofill-ordering)
 - Supabase PostgreSQL (existing `releases` + `beats` tables, each gains `sort_order`) (004-soundcloud-autofill-ordering)
+- TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing), `next/font/google` (existing mechanism) (005-tools-ps2-grid)
+- Supabase PostgreSQL — new `tools` table (005-tools-ps2-grid)
 
 - TypeScript 5 / Next.js 16.2.1 App Router + React 19, Tailwind CSS v4 (`@theme` directive), `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (new) (003-admin-auth-ingestion)
 - Supabase (no schema changes in this feature) (002-beats-list-redesign)
@@ -27,6 +29,7 @@ npm test && npm run lint
 TypeScript 5 / Next.js 16.2.1 App Router: Follow standard conventions
 
 ## Recent Changes
+- 005-tools-ps2-grid: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing), `next/font/google` (existing mechanism)
 - 004-soundcloud-autofill-ordering: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing)
 
 - 003-admin-auth-ingestion: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (new)
@@ -35,9 +38,8 @@ TypeScript 5 / Next.js 16.2.1 App Router: Follow standard conventions
 TypeScript 5 / Next.js 16.2.1: Follow standard conventions
 
 ## Recent Changes
-- 002-beats-list-redesign: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, Supabase JS clien
+- 005-tools-ps2-grid: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing), `next/font/google` (existing mechanism)
 
-- 001-ui-readability: Added TypeScript 5 / Next.js 16.2.1 + React 19, Tailwind CSS v4 (`@theme` directive)
 
 <!-- MANUAL ADDITIONS START -->
 ## Actual Project Structure

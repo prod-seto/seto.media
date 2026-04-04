@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Divider } from "@/components/Divider";
 import { HomeCatalog } from "@/components/HomeCatalog";
 import { supabase } from "@/lib/supabase";
 
@@ -71,7 +73,58 @@ export default async function Home() {
         </div>
       </header>
 
+      <Divider label="CATALOG" />
+
       <HomeCatalog beats={beats ?? []} releases={releases ?? []} />
+
+      <Divider label="TOOLS" />
+
+      <Link
+        href="/tools"
+        className="ghost-panel"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "20px 24px",
+          textDecoration: "none",
+          transition: "background 0.15s ease",
+        }}
+      >
+        <div>
+          <p style={{
+            fontFamily: "var(--font-share-tech-mono), monospace",
+            fontSize: "8px",
+            letterSpacing: "3px",
+            color: "#5A8AAA",
+            textTransform: "uppercase",
+            marginBottom: "6px",
+          }}>
+            PRODUCER TOOLS
+          </p>
+          <p style={{
+            fontFamily: "var(--font-orbitron), sans-serif",
+            fontSize: "14px",
+            fontWeight: 700,
+            letterSpacing: "2px",
+            color: "#2A6094",
+            textTransform: "uppercase",
+          }}>
+            ISOtone · Mosaic · MIDIripper
+          </p>
+        </div>
+        <span style={{
+          fontFamily: "var(--font-share-tech-mono), monospace",
+          fontSize: "10px",
+          letterSpacing: "2px",
+          color: "#5A9ED4",
+          textTransform: "uppercase",
+          flexShrink: 0,
+          marginLeft: "16px",
+        }}>
+          VIEW TOOLS →
+        </span>
+      </Link>
 
     </main>
   );

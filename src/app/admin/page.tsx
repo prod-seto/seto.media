@@ -117,6 +117,26 @@ export default function AdminPage() {
           </Link>
 
           <Link
+            href="/admin/tools"
+            className="tag"
+            style={{
+              ...mono,
+              display: "inline-block",
+              fontSize: "10px",
+              letterSpacing: "2.5px",
+              textTransform: "uppercase",
+              padding: "10px 16px",
+              textDecoration: "none",
+              background: "rgba(90,158,212,0.08)",
+              borderColor: "rgba(90,158,212,0.35)",
+              color: "#2A6094",
+              width: "fit-content",
+            }}
+          >
+            MANAGE TOOLS
+          </Link>
+
+          <Link
             href="/admin/releases/order"
             className="tag"
             style={{
