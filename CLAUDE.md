@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2026-04-03
 
 ## Active Technologies
+- TypeScript 5 / Next.js 16.2.1 App Router + React 19, Supabase JS clien (002-beats-list-redesign)
+- Supabase (no schema changes in this feature) (002-beats-list-redesign)
 
 - TypeScript 5 / Next.js 16.2.1 + React 19, Tailwind CSS v4 (`@theme` directive) (001-ui-readability)
 
@@ -23,6 +25,7 @@ npm test && npm run lint
 TypeScript 5 / Next.js 16.2.1: Follow standard conventions
 
 ## Recent Changes
+- 002-beats-list-redesign: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, Supabase JS clien
 
 - 001-ui-readability: Added TypeScript 5 / Next.js 16.2.1 + React 19, Tailwind CSS v4 (`@theme` directive)
 
