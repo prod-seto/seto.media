@@ -115,6 +115,46 @@ export default function AdminPage() {
           >
             + NEW BEAT
           </Link>
+
+          <Link
+            href="/admin/releases/order"
+            className="tag"
+            style={{
+              ...mono,
+              display: "inline-block",
+              fontSize: "10px",
+              letterSpacing: "2.5px",
+              textTransform: "uppercase",
+              padding: "10px 16px",
+              textDecoration: "none",
+              background: "rgba(90,158,212,0.08)",
+              borderColor: "rgba(90,158,212,0.35)",
+              color: "#2A6094",
+              width: "fit-content",
+            }}
+          >
+            REORDER RELEASES
+          </Link>
+
+          <Link
+            href="/admin/beats/order"
+            className="tag"
+            style={{
+              ...mono,
+              display: "inline-block",
+              fontSize: "10px",
+              letterSpacing: "2.5px",
+              textTransform: "uppercase",
+              padding: "10px 16px",
+              textDecoration: "none",
+              background: "rgba(90,158,212,0.08)",
+              borderColor: "rgba(90,158,212,0.35)",
+              color: "#2A6094",
+              width: "fit-content",
+            }}
+          >
+            REORDER BEATS
+          </Link>
         </div>
 
         <SignOutButton />

@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState, useTransition } from "react";
 import Link from "next/link";
 import { createRelease } from "@/app/actions/releases";
+import { fetchSoundCloudMetadata } from "@/app/actions/soundcloud";
 
 const mono: React.CSSProperties = {
   fontFamily: "var(--font-share-tech-mono), monospace",
@@ -47,6 +48,29 @@ const fieldErrorStyle: React.CSSProperties = {
 
 export default function NewReleasePage() {
   const [state, formAction, isPending] = useActionState(createRelease, null);
+
+  const [scUrl, setScUrl] = useState("");
+  const [fetchError, setFetchError] = useState<string | null>(null);
+  const [isFetching, startFetch] = useTransition();
+
+  // Controlled values for autofill fields
+  const [title, setTitle] = useState("");
+  const [artist, setArtist] = useState("");
+  const [coverUrl, setCoverUrl] = useState("");
+
+  function handleFetch() {
+    setFetchError(null);
+    startFetch(async () => {
+      const result = await fetchSoundCloudMetadata(scUrl);
+      if (result.error) {
+        setFetchError(result.error);
+      } else {
+        if (result.title !== undefined) setTitle(result.title);
+        if (result.artist !== undefined) setArtist(result.artist);
+        if (result.coverUrl !== undefined) setCoverUrl(result.coverUrl);
+      }
+    });
+  }
 
   if (state && state.success) {
     return (
@@ -141,22 +165,84 @@ export default function NewReleasePage() {
           </Link>
         </div>
 
+        {/* ── SoundCloud autofill ────────────────────────────── */}
+        <div
+          style={{
+            marginBottom: "24px",
+            paddingBottom: "24px",
+            borderBottom: "1px solid rgba(90,158,212,0.20)",
+          }}
+        >
+          <label style={labelStyle}>SOUNDCLOUD TRACK URL</label>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <input
+              type="url"
+              value={scUrl}
+              onChange={(e) => setScUrl(e.target.value)}
+              placeholder="https://soundcloud.com/..."
+              style={{ ...inputStyle, flex: 1 }}
+            />
+            <button
+              type="button"
+              onClick={handleFetch}
+              disabled={isFetching || !scUrl}
+              className="tag"
+              style={{
+                ...mono,
+                fontSize: "8px",
+                letterSpacing: "1.5px",
+                textTransform: "uppercase",
+                padding: "0 14px",
+                cursor: isFetching || !scUrl ? "not-allowed" : "pointer",
+                background: "rgba(90,158,212,0.10)",
+                borderColor: "rgba(90,158,212,0.40)",
+                color: "#2A6094",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              {isFetching ? "FETCHING..." : "FETCH METADATA"}
+            </button>
+          </div>
+          {fetchError && (
+            <p style={{ ...fieldErrorStyle, marginTop: "6px" }}>
+              {fetchError.toUpperCase()}
+            </p>
+          )}
+        </div>
+
+        {/* ── Release fields ─────────────────────────────────── */}
         <form action={formAction}>
-          {/* Hidden is_visible default */}
+          {/* Pass the SoundCloud URL through to the action */}
+          <input type="hidden" name="soundcloud_url" value={scUrl} />
           <input type="hidden" name="is_visible" value="true" />
 
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
             {/* Title */}
             <div>
               <label style={labelStyle}>TITLE *</label>
-              <input type="text" name="title" required style={inputStyle} />
+              <input
+                type="text"
+                name="title"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                style={inputStyle}
+              />
               {fields?.title && <p style={fieldErrorStyle}>{fields.title.toUpperCase()}</p>}
             </div>
 
             {/* Artist */}
             <div>
               <label style={labelStyle}>ARTIST *</label>
-              <input type="text" name="artist" required style={inputStyle} />
+              <input
+                type="text"
+                name="artist"
+                required
+                value={artist}
+                onChange={(e) => setArtist(e.target.value)}
+                style={inputStyle}
+              />
               {fields?.artist && <p style={fieldErrorStyle}>{fields.artist.toUpperCase()}</p>}
             </div>
 
@@ -178,16 +264,16 @@ export default function NewReleasePage() {
               </select>
             </div>
 
-            {/* SoundCloud URL */}
-            <div>
-              <label style={labelStyle}>SOUNDCLOUD URL</label>
-              <input type="url" name="soundcloud_url" style={inputStyle} />
-            </div>
-
             {/* Cover URL */}
             <div>
               <label style={labelStyle}>COVER IMAGE URL</label>
-              <input type="url" name="cover_url" style={inputStyle} />
+              <input
+                type="url"
+                name="cover_url"
+                value={coverUrl}
+                onChange={(e) => setCoverUrl(e.target.value)}
+                style={inputStyle}
+              />
             </div>
 
             {/* Release date */}
@@ -196,7 +282,7 @@ export default function NewReleasePage() {
               <input type="date" name="released_at" style={inputStyle} />
             </div>
 
-            {/* is_visible toggle — override hidden default */}
+            {/* is_visible toggle */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <input
                 type="checkbox"
