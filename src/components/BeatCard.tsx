@@ -20,13 +20,11 @@ export function BeatRow({
   activeTags,
   onTagToggle,
   isLast,
-  isFirst,
 }: {
   beat: Beat;
   activeTags: string[];
   onTagToggle: (tag: string) => void;
   isLast: boolean;
-  isFirst: boolean;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -172,51 +170,72 @@ export function BeatRow({
         <audio ref={audioRef} src={beat.audio_url} preload="metadata" crossOrigin="anonymous" />
       )}
 
-      {/* Main row: play | title | tags | meta */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        padding: isPlaying
-          ? `${isFirst ? 20 : 10}px 14px 8px`
-          : `${isFirst ? 20 : 10}px 14px`,
-      }}>
-        <button
-          onClick={toggle}
-          className="tag"
-          style={{
-            cursor: beat.audio_url ? "pointer" : "default",
-            opacity: beat.audio_url ? 1 : 0.35,
-            background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
-            borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
-            color: "#2A6094",
-            flexShrink: 0,
-            padding: "2px 7px",
-            letterSpacing: "2px",
-            fontSize: "9px",
-          }}
-        >
-          {isPlaying ? "⏸" : "▶"}
-        </button>
+      {/* Lines 1–3 share outer padding */}
+      <div style={{ padding: isPlaying ? "10px 14px 8px" : "10px 14px" }}>
 
-        <h3 style={{
-          ...display,
-          fontSize: "13px",
-          fontWeight: 700,
-          letterSpacing: "1.5px",
-          color: isPlaying ? "#2A6094" : "#3A7AAA",
-          flex: 1,
-          minWidth: 0,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          transition: "color 0.25s ease",
-        }}>
-          {beat.title}
-        </h3>
+        {/* Line 1: play button + title */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <button
+            onClick={toggle}
+            className="tag"
+            style={{
+              cursor: beat.audio_url ? "pointer" : "default",
+              opacity: beat.audio_url ? 1 : 0.35,
+              background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
+              borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
+              color: "#2A6094",
+              flexShrink: 0,
+              padding: "2px 7px",
+              letterSpacing: "2px",
+              fontSize: "9px",
+            }}
+          >
+            {isPlaying ? "⏸" : "▶"}
+          </button>
 
+          <h3 style={{
+            ...display,
+            fontSize: "13px",
+            fontWeight: 700,
+            letterSpacing: "1.5px",
+            color: isPlaying ? "#2A6094" : "#3A7AAA",
+            flex: 1,
+            minWidth: 0,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            transition: "color 0.25s ease",
+            margin: 0,
+          }}>
+            {beat.title}
+          </h3>
+        </div>
+
+        {/* Line 2: BPM · KEY — indented to align with title */}
+        {meta && (
+          <div style={{
+            ...mono,
+            fontSize: "11px",
+            letterSpacing: "1.5px",
+            color: "#5A8AAA",
+            textTransform: "uppercase",
+            paddingLeft: "36px",
+            marginTop: "4px",
+            marginBottom: "4px",
+          }}>
+            {meta}
+          </div>
+        )}
+
+        {/* Line 3: tags — indented, wrapping */}
         {beat.tags.length > 0 && (
-          <div style={{ display: "flex", gap: "4px", flexShrink: 0 }}>
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "4px",
+            paddingLeft: "36px",
+            marginTop: meta ? "0" : "4px",
+          }}>
             {beat.tags.map((tag) => {
               const active = activeTags.includes(tag);
               return (
@@ -239,19 +258,6 @@ export function BeatRow({
               );
             })}
           </div>
-        )}
-
-        {meta && (
-          <span style={{
-            ...mono,
-            fontSize: "8px",
-            letterSpacing: "1.5px",
-            color: "#5A8AAA",
-            textTransform: "uppercase",
-            flexShrink: 0,
-          }}>
-            {meta}
-          </span>
         )}
       </div>
 
