@@ -62,7 +62,7 @@ function FolderSection({ folder, isLast }: { folder: Folder; isLast: boolean }) 
       {/* Tools inside folder */}
       {folder.tools.map((tool, i) => {
         const isLastTool = i === folder.tools.length - 1;
-        const tagline = tool.game_subtitle ?? tool.description;
+        const tagline = tool.description;
 
         return (
           <div key={tool.id}>
