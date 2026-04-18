@@ -1,43 +1,20 @@
 import type { Metadata } from "next";
-import { Orbitron, Exo_2, Share_Tech_Mono, Turret_Road, Chakra_Petch, Teko } from "next/font/google";
+import { DM_Sans, DM_Mono } from "next/font/google";
 import Script from "next/script";
+import { SiteNav } from "@/components/SiteNav";
 import "./globals.css";
 
-const orbitron = Orbitron({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  variable: "--font-orbitron",
-});
-
-const exo2 = Exo_2({
-  subsets: ["latin"],
-  weight: ["200", "300"],
+  weight: ["300", "400"],
   style: ["normal", "italic"],
-  variable: "--font-exo2",
+  variable: "--font-dm-sans",
 });
 
-const shareTechMono = Share_Tech_Mono({
+const dmMono = DM_Mono({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-share-tech-mono",
-});
-
-const turretRoad = Turret_Road({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-turret-road",
-});
-
-const chakraPetch = Chakra_Petch({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-chakra-petch",
-});
-
-const teko = Teko({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-teko",
+  weight: ["300"],
+  variable: "--font-dm-mono",
 });
 
 export const metadata: Metadata = {
@@ -53,12 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} ${exo2.variable} ${shareTechMono.variable} ${turretRoad.variable} ${chakraPetch.variable} ${teko.variable} antialiased`}
+        className={`${dmSans.variable} ${dmMono.variable} antialiased`}
         style={{ background: "#EEF4F8", color: "#2E6080" }}
       >
         {/* z-index: 1 keeps content above the body::before wash overlay */}
         <Script src="https://w.soundcloud.com/player/api.js" strategy="afterInteractive" />
         <div style={{ position: "relative", zIndex: 1 }}>
+          <SiteNav />
           {children}
         </div>
       </body>

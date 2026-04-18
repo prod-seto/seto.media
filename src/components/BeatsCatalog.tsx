@@ -3,8 +3,6 @@ import { useState, useMemo } from "react";
 import type { Beat } from "@/lib/types";
 import { BeatRow } from "./BeatCard";
 
-const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
-
 export function BeatsCatalog({ beats }: { beats: Beat[] }) {
   const [activeTags, setActiveTags] = useState<string[]>([]);
 
@@ -29,10 +27,8 @@ export function BeatsCatalog({ beats }: { beats: Beat[] }) {
 
   return (
     <div>
-      <h2 style={{ fontFamily: "var(--font-orbitron), sans-serif", fontSize: "16px",
-        fontWeight: 700, letterSpacing: "2px", color: "#2A6094",
-        textTransform: "uppercase", marginBottom: "16px" }}>
-        BEATS
+      <h2 className="type-subheading" style={{ fontSize: "24px", color: "#2A6094", marginBottom: "16px" }}>
+        Beats
       </h2>
 
       <div className="ghost-panel" style={{ overflow: "hidden" }}>
@@ -68,11 +64,8 @@ export function BeatsCatalog({ beats }: { beats: Beat[] }) {
             {activeTags.length > 0 && (
               <button
                 onClick={() => setActiveTags([])}
+                className="type-label"
                 style={{
-                  ...mono,
-                  fontSize: "8px",
-                  letterSpacing: "1.5px",
-                  textTransform: "uppercase",
                   background: "none",
                   border: "none",
                   color: "#5A9ED4",
@@ -81,7 +74,7 @@ export function BeatsCatalog({ beats }: { beats: Beat[] }) {
                   marginLeft: "auto",
                 }}
               >
-                × CLEAR
+                × clear
               </button>
             )}
           </div>
@@ -89,8 +82,7 @@ export function BeatsCatalog({ beats }: { beats: Beat[] }) {
 
         {/* Zone 2 — Beat rows */}
         {filtered.length === 0 ? (
-          <div style={{ padding: "14px", fontFamily: "var(--font-exo2), sans-serif",
-            fontSize: "13px", color: "#5A8AAA", fontWeight: 300 }}>
+          <div className="type-body" style={{ padding: "14px", color: "#5A8AAA" }}>
             No beats match the selected tags.
           </div>
         ) : (
