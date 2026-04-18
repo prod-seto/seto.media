@@ -13,7 +13,7 @@ function formatTime(ms: number) {
   return `${m}:${String(s % 60).padStart(2, "0")}`;
 }
 
-const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
+const mono: React.CSSProperties = { fontFamily: "'Unifont', monospace" };
 
 export interface SoundCloudPlayerRef {
   seek: (pct: number) => void;
@@ -160,10 +160,10 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
             </div>
             {/* Times */}
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ ...mono, fontSize: "8px", color: "#5A8AAA", letterSpacing: "1px" }}>
+              <span style={{ ...mono, fontSize: "11px", color: "#5A8AAA", letterSpacing: "1px" }}>
                 {duration > 0 ? formatTime(position) : "—"}
               </span>
-              <span style={{ ...mono, fontSize: "8px", color: "#5A8AAA", letterSpacing: "1px" }}>
+              <span style={{ ...mono, fontSize: "11px", color: "#5A8AAA", letterSpacing: "1px" }}>
                 {duration > 0 ? formatTime(duration) : "—"}
               </span>
             </div>

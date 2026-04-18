@@ -3,9 +3,6 @@ import { useRef, useState } from "react";
 import type { Release } from "@/lib/types";
 import { SoundCloudPlayer, SoundCloudPlayerRef } from "./SoundCloudPlayer";
 
-const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
-const display: React.CSSProperties = { fontFamily: "var(--font-orbitron), sans-serif" };
-const body: React.CSSProperties = { fontFamily: "var(--font-exo2), sans-serif" };
 
 const N_BARS = 80;
 
@@ -146,33 +143,27 @@ export function ReleaseCard({ release: r }: { release: Release }) {
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
           {/* Title — Artist inline */}
           <div style={{ display: "flex", alignItems: "baseline", gap: "8px", minWidth: 0 }}>
-            <h3 style={{
-              ...display,
-              fontSize: "13px",
-              fontWeight: 700,
-              letterSpacing: "1.5px",
+            <h3 className="type-subheading" style={{
+              fontSize: "18px",
               color: "#2A6094",
-              textTransform: "uppercase",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
               flexShrink: 1,
               minWidth: 0,
+              margin: 0,
             }}>
               {r.title}
             </h3>
-            <span style={{
-              ...mono,
+            <span className="type-label" style={{
               fontSize: "10px",
               color: "#5A8AAA",
               flexShrink: 0,
             }}>
               —
             </span>
-            <span style={{
-              ...body,
-              fontSize: "12px",
-              fontWeight: 300,
+            <span className="type-body" style={{
+              fontSize: "16px",
               color: "#5A8AAA",
               whiteSpace: "nowrap",
               flexShrink: 0,

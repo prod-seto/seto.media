@@ -12,8 +12,6 @@ function formatTime(s: number) {
   return `${m}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 }
 
-const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
-const display: React.CSSProperties = { fontFamily: "var(--font-orbitron), sans-serif" };
 
 export function BeatRow({
   beat,
@@ -193,11 +191,8 @@ export function BeatRow({
             {isPlaying ? "⏸" : "▶"}
           </button>
 
-          <h3 style={{
-            ...display,
-            fontSize: "13px",
-            fontWeight: 700,
-            letterSpacing: "1.5px",
+          <h3 className="type-subheading" style={{
+            fontSize: "18px",
             color: isPlaying ? "#2A6094" : "#3A7AAA",
             flex: 1,
             minWidth: 0,
@@ -213,12 +208,8 @@ export function BeatRow({
 
         {/* Line 2: BPM · KEY — indented to align with title */}
         {meta && (
-          <div style={{
-            ...mono,
-            fontSize: "11px",
-            letterSpacing: "1.5px",
+          <div className="type-label" style={{
             color: "#5A8AAA",
-            textTransform: "uppercase",
             paddingLeft: "36px",
             marginTop: "4px",
             marginBottom: "4px",
@@ -287,10 +278,10 @@ export function BeatRow({
             }} />
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span style={{ ...mono, fontSize: "8px", color: "#5A8AAA", letterSpacing: "1px" }}>
+            <span className="type-label" style={{ fontSize: "13px", color: "#5A8AAA" }}>
               {duration > 0 ? formatTime(position) : "—"}
             </span>
-            <span style={{ ...mono, fontSize: "8px", color: "#5A8AAA", letterSpacing: "1px" }}>
+            <span className="type-label" style={{ fontSize: "13px", color: "#5A8AAA" }}>
               {duration > 0 ? formatTime(duration) : "—"}
             </span>
           </div>

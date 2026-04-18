@@ -1,19 +1,15 @@
 import type { Release } from "@/lib/types";
 import { ReleaseCard } from "./ReleaseCard";
 
-const body: React.CSSProperties = { fontFamily: "var(--font-exo2), sans-serif" };
-
 export function ReleasesCatalog({ releases }: { releases: Release[] }) {
   return (
     <div>
-      <h2 style={{ fontFamily: "var(--font-orbitron), sans-serif", fontSize: "16px",
-        fontWeight: 700, letterSpacing: "2px", color: "#2A6094",
-        textTransform: "uppercase", marginBottom: "16px" }}>
-        RELEASES
+      <h2 className="type-subheading" style={{ fontSize: "24px", color: "#2A6094", marginBottom: "16px" }}>
+        Releases
       </h2>
 
       {releases.length === 0 && (
-        <p style={{ ...body, fontSize: "13px", color: "#5A8AAA", fontWeight: 300 }}>
+        <p className="type-body" style={{ color: "#5A8AAA" }}>
           No releases yet.
         </p>
       )}

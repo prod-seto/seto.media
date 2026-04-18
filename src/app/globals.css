@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Unifont';
+  src: url('/fonts/unifont-17.0.04.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* ── Contemporary Soft Club — colour tokens ───────────────────── */
 
@@ -23,10 +31,10 @@
   --color-mid:   #2E6080;
   --color-faint: #5A8AAA;
 
-  /* ── Typography ─────────────────────────────────────────────────── */
-  --font-display: var(--font-orbitron), 'Segoe UI', system-ui, sans-serif;
-  --font-sans:    var(--font-exo2), system-ui, sans-serif;
-  --font-mono:    var(--font-share-tech-mono), 'Courier New', monospace;
+  /* ── Typography — Unifont trial ─────────────────────────────────── */
+  --font-display: 'Unifont', system-ui, sans-serif;
+  --font-sans:    'Unifont', system-ui, sans-serif;
+  --font-mono:    var(--font-dm-mono), 'IBM Plex Mono', 'Space Mono', monospace;
 }
 
 /* ── Base ───────────────────────────────────────────────────────── */
@@ -123,7 +131,7 @@ body::before {
   top: 0; left: 0;
   width: 28px;
   height: 100%;
-  font-family: 'Share Tech Mono', monospace;
+  font-family: 'Unifont', monospace;
   font-size: 7px;
   color: #5A9ED4;
   opacity: 0.35;
@@ -146,10 +154,48 @@ body::before {
   pointer-events: none;
 }
 
+/* ── Type scale — Unifont ────────────────────────────────────────── */
+/* Rule: text-transform uppercase is ONLY permitted on .type-label     */
+
+.type-display {
+  font-family: 'Unifont', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  font-style: normal;
+}
+
+.type-display-italic {
+  font-family: 'Unifont', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  font-style: italic;
+}
+
+.type-subheading {
+  font-family: 'Unifont', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.type-body {
+  font-family: 'Unifont', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.type-label {
+  font-family: 'Unifont', monospace;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* ── Data readout (decorative monospace clusters) ───────────────── */
 .data-readout {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 8px;
+  font-family: 'Unifont', monospace;
+  font-size: 13px;
   letter-spacing: 1px;
   color: rgba(90,158,212,0.45);
   pointer-events: none;
@@ -158,9 +204,10 @@ body::before {
 
 /* ── Tag / badge ─────────────────────────────────────────────────── */
 .tag {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  font-family: 'Unifont', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 3px 10px;
   border: 1px solid rgba(90,158,212,0.35);
@@ -173,39 +220,169 @@ body::before {
   display: block;
   cursor: pointer;
   text-decoration: none;
+  position: relative;
 }
 
 .disk-face {
   clip-path: circle(50%);
-  background: conic-gradient(
-    rgba(90,158,212,0.55)  0deg,
-    rgba(168,216,208,0.50) 90deg,
-    rgba(200,212,240,0.60) 180deg,
-    rgba(106,184,176,0.45) 270deg,
-    rgba(90,158,212,0.55)  360deg
-  );
   position: relative;
   aspect-ratio: 1;
   width: 100%;
   overflow: hidden;
-  transition: filter 0.15s ease;
+  transition: filter 0.18s ease;
+  container-type: inline-size;
+  background: #1a2744;
+  /* Metallic iridescent outer rim — three layered inset rings */
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.55),
+    inset 0 0 0 5px rgba(180,200,230,0.25),
+    inset 0 0 0 8px rgba(100,130,180,0.12);
 }
 
 .disk-wrapper:hover .disk-face {
-  filter: brightness(1.08);
+  filter: brightness(1.10) saturate(1.05);
 }
 
-.disk-artwork {
+/* Art zone — top 85% (extends all the way to the brand bar) */
+.disk-art-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85%;
+  overflow: hidden;
+}
+
+.disk-art-bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.82;
-  mix-blend-mode: multiply;
+  opacity: 1;
   pointer-events: none;
 }
 
+.disk-art-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.60) 100%);
+  pointer-events: none;
+}
+
+/* Dark gradient overlay — lower portion of art zone, behind logos */
+.disk-info-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 42%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(2,4,16,0.78) 55%, rgba(2,4,16,0.88) 100%);
+  pointer-events: none;
+}
+
+/* Game title — upper-center of art zone */
+.disk-game-title {
+  position: absolute;
+  top: 14%;
+  width: 100%;
+  text-align: center;
+  padding: 0 14%;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.90), 0 0 20px rgba(0,0,0,0.60);
+  line-height: 1.15;
+  pointer-events: none;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Game subtitle — below game title */
+.disk-game-subtitle {
+  position: absolute;
+  top: 38%;
+  width: 100%;
+  text-align: center;
+  padding: 0 14%;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 4.5cqi;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.80);
+  opacity: 0.80;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* PlayStation logo — left of hub, vertically centered near hub */
+.disk-ps-logo {
+  position: absolute;
+  top: 55%;
+  left: 12%;
+  width: 22%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.disk-ps-logo-img {
+  width: 100%;
+  display: block;
+  mix-blend-mode: screen;
+}
+
+/* SETO Computer Entertainment logo — right of hub */
+.disk-seto-logo {
+  position: absolute;
+  top: 55%;
+  right: 7%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ESRB badge image — below PlayStation logo, left of hub */
+.disk-esrb-img {
+  position: absolute;
+  top: 72%;
+  left: 14%;
+  height: 14cqi;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.disk-esrb-img img {
+  height: 100%;
+  width: auto;
+  display: block;
+  mix-blend-mode: screen;
+}
+
+/* Brand bar — bottom 15% */
+.disk-brand-bar {
+  position: absolute;
+  top: 85%;
+  left: 0;
+  width: 100%;
+  height: 15%;
+  background: #080808;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disk-brand-bar-text {
+  font-family: 'Unifont', sans-serif;
+  font-weight: 700;
+  font-size: 5cqi;
+  color: rgba(255,255,255,0.92);
+  letter-spacing: 0.5px;
+  text-transform: none;
+}
+
+/* Hub ring — center spindle; simulates the physical spindle hole.
+   Background is set as a radial-gradient in DiskCard.tsx using
+   hub_color, so CSS background is intentionally absent here. */
 .disk-hub {
   position: absolute;
   top: 50%;
@@ -213,40 +390,68 @@ body::before {
   transform: translate(-50%, -50%);
   width: 18%;
   aspect-ratio: 1;
-  clip-path: circle(50%);
-  background: rgba(238,244,248,0.80);
-  border: 1px solid rgba(90,158,212,0.40);
+  border-radius: 50%;
+  border: 2px solid rgba(210,210,210,0.65);
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.35), 0 1px 2px rgba(255,255,255,0.12);
   pointer-events: none;
+  z-index: 2;
 }
 
-.disk-label {
-  margin-top: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.2;
+/* Rim text SVG overlay */
+.disk-rim-text {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ── Tools grid ─────────────────────────────────────────────── */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  gap: 24px;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .tools-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 }
 
-@media (max-width: 440px) {
+@media (max-width: 680px) {
   .tools-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Logo 3-D spin — right edge toward viewer, left edge away ── */
+@keyframes spin3d {
+  from { transform: perspective(180px) rotateY(0deg); }
+  to   { transform: perspective(180px) rotateY(360deg); }
+}
+
+.logo-spin {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+  border: 1px solid rgba(90,158,212,0.45);
+  animation: spin3d 5s linear infinite;
+}
+
+/* ── Tool file-tree row hover ───────────────────────────────── */
+.tool-tree-row {
+  transition: background 0.12s ease;
+  text-decoration: none;
+  display: block;
+}
+.tool-tree-row:hover {
+  background: rgba(90,158,212,0.06);
 }
 
 /* ── Audio visualizer bar animation ────────────────────────── */
