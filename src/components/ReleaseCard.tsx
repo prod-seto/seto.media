@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import type { Release } from "@/lib/types";
 import { SoundCloudPlayer, SoundCloudPlayerRef } from "./SoundCloudPlayer";
 
@@ -24,39 +24,57 @@ function Waveform({ bars, progress, onSeek }: {
   progress: number;
   onSeek: (pct: number) => void;
 }) {
-  function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const W_css = canvas.offsetWidth;
+    const H_css = canvas.offsetHeight;
+    if (W_css === 0 || H_css === 0) return;
+
+    const W = Math.round(W_css * dpr);
+    const H = Math.round(H_css * dpr);
+
+    if (canvas.width !== W || canvas.height !== H) {
+      canvas.width = W;
+      canvas.height = H;
+    }
+
+    // Work directly in device pixels — no CSS-pixel transform.
+    // This lets us use exact float bar widths so every bar is mathematically
+    // identical in width, with no rounding accumulation.
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    const N = bars.length;
+    const GAP = Math.max(1, Math.round(dpr)); // 1 CSS px in device pixels
+    const barW = (W - (N - 1) * GAP) / N;    // exact float — same for every bar
+    const playedIdx = Math.floor(progress * N);
+
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < N; i++) {
+      const x = i * (barW + GAP);             // no rounding — positions are exact
+      const barH = Math.max(bars[i] * H, 2);
+      ctx.fillStyle = i < playedIdx ? "rgba(90,158,212,0.75)" : "rgba(90,158,212,0.18)";
+      ctx.fillRect(x, H - barH, barW, barH);
+    }
+  }, [bars, progress]);
+
+  function handleClick(e: React.MouseEvent<HTMLCanvasElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     onSeek((e.clientX - rect.left) / rect.width);
   }
 
-  const playedIdx = Math.floor(progress * bars.length);
-
   return (
-    <div
+    <canvas
+      ref={canvasRef}
       onClick={handleClick}
-      style={{
-        display: "flex",
-        alignItems: "flex-end",
-        gap: "1.5px",
-        height: "40px",
-        cursor: "pointer",
-        overflow: "hidden",
-      }}
-    >
-      {bars.map((amp, i) => (
-        <div
-          key={i}
-          style={{
-            flex: 1,
-            height: `${Math.max(amp * 100, 4)}%`,
-            background: i < playedIdx
-              ? "rgba(90,158,212,0.75)"
-              : "rgba(90,158,212,0.18)",
-            transition: "background 0.1s ease",
-          }}
-        />
-      ))}
-    </div>
+      style={{ display: "block", width: "100%", height: "40px", cursor: "pointer" }}
+    />
   );
 }
 

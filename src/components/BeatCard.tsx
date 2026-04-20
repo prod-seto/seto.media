@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { Beat } from "@/lib/types";
+import { registerBeatPause, notifyBeatPlay } from "@/lib/audio-coordinator";
 
 // Module-level: only one beat plays at a time
 let currentAudio: HTMLAudioElement | null = null;
+
+registerBeatPause(() => { if (currentAudio) { currentAudio.pause(); currentAudio = null; } });
 
 const N_BARS = 64;
 
@@ -113,7 +116,8 @@ export function BeatRow({
     } else {
       if (currentAudio && currentAudio !== audio) currentAudio.pause();
       currentAudio = audio;
-      audio.play();
+      notifyBeatPlay();
+      audio.play().catch(() => {});
     }
   }
 
@@ -128,11 +132,20 @@ export function BeatRow({
     const audio = audioRef.current;
     if (!audio) return;
 
-    const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
+    const stopRaf = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    };
+
+    const onPlay = () => {
+      setIsPlaying(true);
+      // Start visualizer loop only when actually playing
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(drawFrame);
+    };
+    const onPause = () => { setIsPlaying(false); stopRaf(); };
     const onTimeUpdate = () => setPosition(audio.currentTime);
     const onLoadedMetadata = () => setDuration(audio.duration);
-    const onEnded = () => { setIsPlaying(false); setPosition(0); };
+    const onEnded = () => { setIsPlaying(false); setPosition(0); stopRaf(); };
 
     audio.addEventListener("play", onPlay);
     audio.addEventListener("pause", onPause);
@@ -140,10 +153,7 @@ export function BeatRow({
     audio.addEventListener("loadedmetadata", onLoadedMetadata);
     audio.addEventListener("ended", onEnded);
 
-    // Metadata may have already loaded before listener was attached
     if (audio.readyState >= 1) setDuration(audio.duration);
-
-    rafRef.current = requestAnimationFrame(drawFrame);
 
     return () => {
       audio.removeEventListener("play", onPlay);
@@ -151,7 +161,11 @@ export function BeatRow({
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("loadedmetadata", onLoadedMetadata);
       audio.removeEventListener("ended", onEnded);
-      cancelAnimationFrame(rafRef.current);
+      stopRaf();
+      // Clear stale module-level reference so it doesn't poison cross-column coordination
+      if (currentAudio === audio) currentAudio = null;
+      // Release AudioContext resources
+      audioCtxRef.current?.close().catch(() => {});
     };
   }, []);
 
@@ -177,13 +191,17 @@ export function BeatRow({
             onClick={toggle}
             className="tag"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "28px",
+              padding: "2px 0",
               cursor: beat.audio_url ? "pointer" : "default",
               opacity: beat.audio_url ? 1 : 0.35,
               background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
               borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
               color: "#2A6094",
               flexShrink: 0,
-              padding: "2px 7px",
               letterSpacing: "2px",
               fontSize: "9px",
             }}

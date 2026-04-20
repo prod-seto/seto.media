@@ -2,14 +2,12 @@
 
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
-export async function updateToolDisk(
+export async function updateTool(
   toolId: string,
   data: {
-    disk_image_url?: string | null;
-    disk_font?: string;
-    disk_font_color?: string;
     name?: string;
     is_visible?: boolean;
+    description?: string;
   }
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = await createSupabaseServerClient();

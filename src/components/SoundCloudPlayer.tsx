@@ -1,11 +1,14 @@
 "use client";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { registerReleasePause, notifyReleasePlay } from "@/lib/audio-coordinator";
 
 declare global {
   interface Window { SC: any }
 }
 
 let currentWidget: any = null;
+
+registerReleasePause(() => { currentWidget?.pause(); });
 
 function formatTime(ms: number) {
   const s = Math.floor(ms / 1000);
@@ -31,6 +34,8 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const widgetRef = useRef<any>(null);
     const durationRef = useRef<number>(0);
+    const isPlayingRef = useRef(false); // mirror of isPlaying for use inside event callbacks
+    const seekingWhilePaused = useRef(false); // suppress PLAY event fired by seekTo
     const [ready, setReady] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [position, setPosition] = useState(0);
@@ -39,6 +44,9 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
     useImperativeHandle(ref, () => ({
       seek(pct: number) {
         if (widgetRef.current && durationRef.current) {
+          // seekTo triggers a PLAY event from the SC widget even when paused.
+          // Set flag so the PLAY handler knows to re-pause instead of updating state.
+          if (!isPlayingRef.current) seekingWhilePaused.current = true;
           widgetRef.current.seekTo(Math.floor(pct * durationRef.current));
         }
       },
@@ -63,14 +71,23 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
             setReady(true);
           });
           widget.bind(window.SC.Widget.Events.PLAY, () => {
+            if (seekingWhilePaused.current) {
+              // SC fired PLAY as a side-effect of seekTo while paused — re-pause immediately
+              seekingWhilePaused.current = false;
+              widget.pause();
+              return;
+            }
+            isPlayingRef.current = true;
             setIsPlaying(true);
             onPlayStateChange?.(true);
           });
           widget.bind(window.SC.Widget.Events.PAUSE, () => {
+            isPlayingRef.current = false;
             setIsPlaying(false);
             onPlayStateChange?.(false);
           });
           widget.bind(window.SC.Widget.Events.FINISH, () => {
+            isPlayingRef.current = false;
             setIsPlaying(false);
             onPlayStateChange?.(false);
             setPosition(0);
@@ -84,16 +101,30 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
         if (++attempts > 50) clearInterval(init);
       }, 100);
 
-      return () => clearInterval(init);
+      return () => {
+        clearInterval(init);
+        // Clear stale module-level reference on unmount so navigation doesn't leave
+        // a detached widget that throws when pause() is called via the coordinator
+        if (currentWidget === widgetRef.current) currentWidget = null;
+      };
     }, []);
 
     function toggle() {
       if (!widgetRef.current || !ready) return;
+      // User explicitly acting — cancel any pending seek suppression
+      seekingWhilePaused.current = false;
       if (!isPlaying && currentWidget && currentWidget !== widgetRef.current) {
-        currentWidget.pause();
+        try { currentWidget.pause(); } catch { /* stale reference from prior navigation */ }
       }
-      if (!isPlaying) currentWidget = widgetRef.current;
-      widgetRef.current.toggle();
+      if (!isPlaying) {
+        currentWidget = widgetRef.current;
+        notifyReleasePlay();
+        // Use explicit play()/pause() instead of toggle() so the call is deterministic
+        // regardless of the widget's intermediate buffering/seeking state.
+        widgetRef.current.play();
+      } else {
+        widgetRef.current.pause();
+      }
     }
 
     function seekFromBar(e: React.MouseEvent<HTMLDivElement>) {
@@ -121,6 +152,10 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
             disabled={!ready}
             className="tag"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "88px",
               cursor: ready ? "pointer" : "default",
               opacity: ready ? 1 : 0.35,
               background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
@@ -128,7 +163,6 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
               color: "#2A6094",
               flexShrink: 0,
               letterSpacing: "2px",
-              minWidth: "64px",
             }}
           >
             {isPlaying ? "⏸ PAUSE" : "▶ PLAY"}
