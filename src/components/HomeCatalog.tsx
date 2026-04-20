@@ -4,8 +4,6 @@ import type { Beat, Release } from "@/lib/types";
 import { BeatsCatalog } from "./BeatsCatalog";
 import { ReleasesCatalog } from "./ReleasesCatalog";
 
-const mono: React.CSSProperties = { fontFamily: "var(--font-share-tech-mono), monospace" };
-
 type Tab = "releases" | "beats";
 
 export function HomeCatalog({ beats, releases }: { beats: Beat[]; releases: Release[] }) {
@@ -19,12 +17,10 @@ export function HomeCatalog({ beats, releases }: { beats: Beat[]; releases: Rele
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
+            className="type-label"
             style={{
-              ...mono,
               flex: 1,
-              fontSize: "9px",
-              letterSpacing: "2.5px",
-              textTransform: "uppercase",
+              fontSize: "13px",
               padding: "10px",
               background: activeTab === tab ? "rgba(90,158,212,0.15)" : "rgba(255,255,255,0.30)",
               border: "1px solid rgba(90,158,212,0.35)",

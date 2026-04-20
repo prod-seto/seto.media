@@ -105,10 +105,8 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          disk_font: string
-          disk_font_color: string
-          disk_image_url: string | null
           id: string
+          info_text: string | null
           is_visible: boolean
           name: string
           slug: string
@@ -117,10 +115,8 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
-          disk_font?: string
-          disk_font_color?: string
-          disk_image_url?: string | null
           id?: string
+          info_text?: string | null
           is_visible?: boolean
           name: string
           slug: string
@@ -129,10 +125,8 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
-          disk_font?: string
-          disk_font_color?: string
-          disk_image_url?: string | null
           id?: string
+          info_text?: string | null
           is_visible?: boolean
           name?: string
           slug?: string

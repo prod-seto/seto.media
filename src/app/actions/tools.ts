@@ -2,14 +2,14 @@
 
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
-export async function updateToolDisk(
+export async function updateTool(
   toolId: string,
   data: {
-    disk_image_url?: string | null;
-    disk_font?: string;
-    disk_font_color?: string;
     name?: string;
+    slug?: string;
+    description?: string | null;
     is_visible?: boolean;
+    sort_order?: number;
   }
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = await createSupabaseServerClient();
@@ -21,14 +21,7 @@ export async function updateToolDisk(
     return { success: false, error: "Unauthorized" };
   }
 
-  const { error } = await supabase
-    .from("tools")
-    .update(data)
-    .eq("id", toolId);
-
-  if (error) {
-    return { success: false, error: error.message };
-  }
-
+  const { error } = await supabase.from("tools").update(data).eq("id", toolId);
+  if (error) return { success: false, error: error.message };
   return { success: true };
 }

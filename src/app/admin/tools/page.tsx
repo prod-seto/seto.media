@@ -18,11 +18,6 @@ const body: React.CSSProperties = {
   fontFamily: "var(--font-exo2), sans-serif",
 };
 
-const fontLabels: Record<string, string> = {
-  "turret-road":  "Turret Road",
-  "chakra-petch": "Chakra Petch",
-  "teko":         "Teko",
-};
 
 export default function AdminToolsPage() {
   const router = useRouter();
@@ -91,10 +86,11 @@ export default function AdminToolsPage() {
                   <p style={{ ...display, fontSize: "12px", fontWeight: 700, letterSpacing: "1.5px", color: "#2A6094", textTransform: "uppercase", margin: 0 }}>
                     {tool.name}
                   </p>
-                  <p style={{ ...mono, fontSize: "8px", letterSpacing: "1.5px", color: "#5A8AAA", textTransform: "uppercase", margin: "3px 0 0" }}>
-                    {fontLabels[tool.disk_font] ?? tool.disk_font} · {tool.disk_font_color}
-                    {!tool.is_visible && " · HIDDEN"}
-                  </p>
+                  {(!tool.is_visible || tool.slug) && (
+                    <p style={{ ...mono, fontSize: "8px", letterSpacing: "1.5px", color: "#5A8AAA", textTransform: "uppercase", margin: "3px 0 0" }}>
+                      /{tool.slug}{!tool.is_visible && " · HIDDEN"}
+                    </p>
+                  )}
                 </div>
                 <Link
                   href={`/admin/tools/${tool.id}/edit`}

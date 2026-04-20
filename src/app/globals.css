@@ -116,43 +116,6 @@ body::before {
   pointer-events: none;
 }
 
-/* ── Hero panel — ghost frame + left-edge code column ───────────── */
-/* ::before = code column, ::after = BR corner bracket               */
-.hero-panel {
-  background: rgba(255,255,255,0.40);
-  border: 1px solid rgba(90,158,212,0.35);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-panel::before {
-  content: 'GEN X · 00001 · YOUNG ADULT · 10110 · CONTEMPORARY · 01001 · SOFT CLUB · 11010 · TRANSIT · 00110 · SIGNAL · 10001 · PLATFORM · 01110 · 2001 · 11001';
-  position: absolute;
-  top: 0; left: 0;
-  width: 28px;
-  height: 100%;
-  font-family: 'Unifont', monospace;
-  font-size: 7px;
-  color: #5A9ED4;
-  opacity: 0.35;
-  writing-mode: vertical-rl;
-  overflow: hidden;
-  letter-spacing: 1px;
-  padding: 4px 2px;
-  word-break: break-all;
-  line-height: 1.2;
-  pointer-events: none;
-}
-
-.hero-panel::after {
-  content: '';
-  position: absolute;
-  bottom: 6px; right: 6px;
-  width: 16px; height: 16px;
-  border-bottom: 1px solid rgba(90,158,212,0.50);
-  border-right:  1px solid rgba(90,158,212,0.50);
-  pointer-events: none;
-}
 
 /* ── Type scale — Unifont ────────────────────────────────────────── */
 /* Rule: text-transform uppercase is ONLY permitted on .type-label     */
