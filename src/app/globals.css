@@ -41,6 +41,7 @@
 body {
   background: #EEF4F8;
   color: #2E6080;
+  overflow-x: hidden;
 }
 
 /* ── Overexposed icy wash overlay (sits below all content) ──────── */
