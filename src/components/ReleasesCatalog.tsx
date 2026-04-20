@@ -5,7 +5,7 @@ export function ReleasesCatalog({ releases }: { releases: Release[] }) {
   return (
     <div>
       <h2 className="type-subheading" style={{ fontSize: "24px", color: "#2A6094", marginBottom: "16px" }}>
-        Releases
+        Produced by me
       </h2>
 
       {releases.length === 0 && (

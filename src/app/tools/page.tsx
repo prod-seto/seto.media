@@ -4,11 +4,12 @@ import { supabase } from "@/lib/supabase";
 import type { Tables } from "@/lib/database.types";
 
 type Tool = Tables<"tools">;
-type Folder = { name: string; tools: Tool[] };
+type Folder = { name: string; tools: Tool[]; isComingSoon: boolean };
 
 const mono: React.CSSProperties = { fontFamily: "'Unifont', monospace", fontWeight: 400 };
 
-function FolderSection({ folder, isLast }: { folder: Folder; isLast: boolean }) {
+function FolderSection({ folder, isLast }: { folder: Folder; isLast: boolean; }) {
+  const { isComingSoon } = folder;
   const folderConnector = isLast ? "└──" : "├──";
   // children indent: if folder is last root item, no continuation pipe; otherwise show │
   const childPrefix = isLast ? "    " : "│   ";
@@ -62,73 +63,79 @@ function FolderSection({ folder, isLast }: { folder: Folder; isLast: boolean }) 
       {/* Tools inside folder */}
       {folder.tools.map((tool, i) => {
         const isLastTool = i === folder.tools.length - 1;
-        const tagline = tool.description;
+        const tagline = isComingSoon ? undefined : tool.description;
+
+        const rowContent = (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              padding: tagline ? "9px 24px 5px" : "10px 24px",
+            }}
+          >
+            {/* Indent prefix + item connector */}
+            <span
+              style={{
+                ...mono,
+                fontSize: "18px",
+                color: "rgba(90,158,212,0.35)",
+                flexShrink: 0,
+                whiteSpace: "pre",
+                userSelect: "none",
+              }}
+            >
+              {childPrefix}{isLastTool ? "└──" : "├──"}
+            </span>
+
+            {/* Tool name + tagline */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <span
+                style={{
+                  ...mono,
+                  fontSize: "17px",
+                  letterSpacing: "1px",
+                  color: isComingSoon ? "rgba(90,158,212,0.55)" : "#2A6094",
+                }}
+              >
+                {tool.name.toLowerCase().replace(/[\s-]/g, "_")}
+              </span>
+              {tagline && (
+                <p
+                  className="type-display-italic"
+                  style={{ fontSize: "15px", color: "#5A8AAA", marginTop: "2px" }}
+                >
+                  {tagline}
+                </p>
+              )}
+            </div>
+
+            {/* Arrow — hidden for coming_soon */}
+            {!isComingSoon && (
+              <span
+                style={{
+                  ...mono,
+                  fontSize: "12px",
+                  color: "#5A9ED4",
+                  flexShrink: 0,
+                  letterSpacing: "1px",
+                }}
+              >
+                →
+              </span>
+            )}
+          </div>
+        );
 
         return (
           <div key={tool.id}>
-            <Link href={`/tools/${tool.slug}`} className="tool-tree-row">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  padding: tagline ? "9px 24px 5px" : "10px 24px",
-                }}
-              >
-                {/* Indent prefix + item connector — rendered as pre-formatted mono */}
-                <span
-                  style={{
-                    ...mono,
-                    fontSize: "18px",
-                    color: "rgba(90,158,212,0.35)",
-                    flexShrink: 0,
-                    whiteSpace: "pre",
-                    userSelect: "none",
-                  }}
-                >
-                  {childPrefix}{isLastTool ? "└──" : "├──"}
-                </span>
-
-                {/* Tool name + tagline */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span
-                    style={{
-                      ...mono,
-                      fontSize: "17px",
-                      letterSpacing: "1px",
-                      color: "#2A6094",
-                    }}
-                  >
-                    {tool.name.toLowerCase().replace(/[\s-]/g, "_")}
-                  </span>
-                  {tagline && (
-                    <p
-                      className="type-display-italic"
-                      style={{
-                        fontSize: "15px",
-                        color: "#5A8AAA",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {tagline}
-                    </p>
-                  )}
-                </div>
-
-                {/* Arrow */}
-                <span
-                  style={{
-                    ...mono,
-                    fontSize: "12px",
-                    color: "#5A9ED4",
-                    flexShrink: 0,
-                    letterSpacing: "1px",
-                  }}
-                >
-                  →
-                </span>
-              </div>
-            </Link>
+            {isComingSoon ? (
+              <div>{rowContent}</div>
+            ) : (
+              <Link href={`/tools/${tool.slug}`} className="tool-tree-row">
+                {rowContent}
+              </Link>
+            )}
 
             {/* Vertical connector between tools inside the folder */}
             {!isLastTool && (
@@ -165,7 +172,7 @@ export default async function ToolsPage() {
 
   // Folder layout — add new folders here as needed
   const folders: Folder[] = [
-    { name: "coming_soon", tools: tools ?? [] },
+    { name: "coming_soon", tools: tools ?? [], isComingSoon: true },
   ];
 
   const totalItems = folders.reduce((sum, f) => sum + f.tools.length, 0);
@@ -196,7 +203,7 @@ export default async function ToolsPage() {
                 color: "#5A9ED4",
               }}
             >
-              <span style={{ fontSize: "24px" }}>◈</span> /producer-tools
+              <span style={{ fontSize: "24px" }}>◈</span> /producer_tools
             </span>
             <span
               style={{

@@ -6,6 +6,7 @@ export function SiteNav() {
   const pathname = usePathname();
 
   const homeActive = pathname === "/";
+  const downloadsActive = pathname.startsWith("/downloads");
   const toolsActive = pathname.startsWith("/tools");
 
   return (
@@ -40,6 +41,16 @@ export function SiteNav() {
               }}
             >
               home
+            </Link>
+            <Link
+              href="/downloads"
+              className="type-label"
+              style={{
+                textDecoration: "none",
+                color: downloadsActive ? "#2A6094" : "#5A8AAA",
+              }}
+            >
+              downloads
             </Link>
             <Link
               href="/tools"
