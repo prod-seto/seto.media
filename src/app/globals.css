@@ -485,3 +485,17 @@ body::before {
     display: none;
   }
 }
+
+/* ── Mobile responsive overrides ───────────────────────────── */
+@media (max-width: 639px) {
+  /* Reduce body text size on mobile */
+  .type-body {
+    font-size: 16px;
+  }
+
+  /* Shrink nav link labels to fit all links in one row */
+  .site-nav .type-label {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+}

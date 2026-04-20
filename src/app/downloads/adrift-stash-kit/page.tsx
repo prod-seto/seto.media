@@ -15,11 +15,9 @@ const CONTENTS = [
 
 export default function AdriftStashKitPage() {
   return (
-    <main
-      style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 40px 80px" }}
-    >
-      <div className="ghost-panel" style={{ padding: "32px" }}>
-        <div style={{ display: "flex", gap: "32px", alignItems: "flex-start" }}>
+    <main className="max-w-[960px] mx-auto px-4 sm:px-10 pt-8 pb-20">
+      <div className="ghost-panel p-4 sm:p-8">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-start">
           {/* Cover art */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -27,7 +25,7 @@ export default function AdriftStashKitPage() {
             alt="◈ adrift stash kit cover art"
             width={280}
             height={280}
-            style={{ display: "block", objectFit: "cover", flexShrink: 0 }}
+            className="w-full sm:w-[280px] sm:h-[280px] block object-cover shrink-0"
           />
 
           {/* Info column */}
@@ -42,8 +40,8 @@ export default function AdriftStashKitPage() {
           >
             {/* Title */}
             <h1
-              className="type-display"
-              style={{ fontSize: "28px", color: "#2A6094", margin: 0 }}
+              className="type-display text-[22px] sm:text-[28px]"
+              style={{ color: "#2A6094", margin: 0 }}
             >
               ◈ adrift stash kit
             </h1>
@@ -116,7 +114,7 @@ export default function AdriftStashKitPage() {
             </ul>
 
             {/* Download button */}
-            <div style={{ marginTop: "4px" }}>
+            <div className="flex justify-end mt-1">
               <a
                 href="/downloads/adrift-stash-kit.zip"
                 download

@@ -120,6 +120,7 @@ function FallbackVisualizer({ isPlaying }: { isPlaying: boolean }) {
 export function ReleaseCard({ release: r }: { release: Release }) {
   const playerRef = useRef<SoundCloudPlayerRef>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playerReady, setPlayerReady] = useState(false);
   const [progress, setProgress] = useState(0);
   const [waveformBars, setWaveformBars] = useState<number[] | null>(null);
 
@@ -139,41 +140,61 @@ export function ReleaseCard({ release: r }: { release: Release }) {
 
   return (
     <div className="ghost-panel" style={{ padding: "14px 16px" }}>
-      <div style={{ display: "flex", gap: "14px", alignItems: "center", marginBottom: r.soundcloud_url ? "12px" : "0" }}>
-        {/* Cover art */}
-        {r.cover_url ? (
-          <img
-            src={r.cover_url}
-            alt={r.title}
-            width={88}
-            height={88}
-            style={{ flexShrink: 0, display: "block", objectFit: "cover" }}
-          />
-        ) : (
-          <div style={{
-            width: 88, height: 88, flexShrink: 0,
-            background: "rgba(90,158,212,0.08)",
-            border: "1px solid rgba(90,158,212,0.25)",
-          }} />
-        )}
+      <div style={{ display: "flex", gap: "14px" }}>
 
-        {/* Right column: title row + waveform */}
+        {/* Left column: cover art + play button stacked */}
+        <div className="flex flex-col gap-[10px] w-16 sm:w-[88px] shrink-0">
+          {r.cover_url ? (
+            <img
+              src={r.cover_url}
+              alt={r.title}
+              width={88}
+              height={88}
+              className="w-16 h-16 sm:w-[88px] sm:h-[88px] block object-cover"
+            />
+          ) : (
+            <div className="w-16 h-16 sm:w-[88px] sm:h-[88px]" style={{
+              background: "rgba(90,158,212,0.08)",
+              border: "1px solid rgba(90,158,212,0.25)",
+            }} />
+          )}
+
+          {r.soundcloud_url && (
+            <button
+              onClick={() => playerRef.current?.toggle()}
+              disabled={!playerReady}
+              className="tag w-full"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: playerReady ? "pointer" : "default",
+                opacity: playerReady ? 1 : 0.35,
+                background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
+                borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
+                color: "#2A6094",
+                letterSpacing: "2px",
+              }}
+            >
+              <span className="sm:hidden">{isPlaying ? "⏸" : "▶"}</span>
+              <span className="hidden sm:inline">{isPlaying ? "⏸ PAUSE" : "▶ PLAY"}</span>
+            </button>
+          )}
+        </div>
+
+        {/* Right column: title + waveform + progress bar */}
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
-          {/* Title — Artist inline */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: "8px", minWidth: 0 }}>
+          {/* Title — Artist: inline on sm+, stacked on mobile */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2" style={{ minWidth: 0 }}>
             <h3 className="type-subheading" style={{
               fontSize: "18px",
               color: "#2A6094",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              flexShrink: 1,
               minWidth: 0,
               margin: 0,
             }}>
               {r.title}
             </h3>
-            <span className="type-label" style={{
+            <span className="type-label hidden sm:inline" style={{
               fontSize: "10px",
               color: "#5A8AAA",
               flexShrink: 0,
@@ -181,34 +202,34 @@ export function ReleaseCard({ release: r }: { release: Release }) {
               —
             </span>
             <span className="type-body" style={{
-              fontSize: "16px",
+              fontSize: "14px",
               color: "#5A8AAA",
-              whiteSpace: "nowrap",
-              flexShrink: 0,
             }}>
               {r.artist}
             </span>
           </div>
 
-          {/* Waveform full width */}
+          {/* Waveform full width of right column */}
           {waveformBars ? (
             <Waveform bars={waveformBars} progress={progress} onSeek={handleSeek} />
           ) : (
             <FallbackVisualizer isPlaying={isPlaying} />
           )}
+
+          {/* Progress bar — full width of right column, aligned under waveform */}
+          {r.soundcloud_url && (
+            <SoundCloudPlayer
+              ref={playerRef}
+              url={r.soundcloud_url}
+              hideButton
+              onPlayStateChange={setIsPlaying}
+              onWaveformUrl={handleWaveformUrl}
+              onProgress={setProgress}
+              onReadyChange={setPlayerReady}
+            />
+          )}
         </div>
       </div>
-
-      {/* Player row */}
-      {r.soundcloud_url && (
-        <SoundCloudPlayer
-          ref={playerRef}
-          url={r.soundcloud_url}
-          onPlayStateChange={setIsPlaying}
-          onWaveformUrl={handleWaveformUrl}
-          onProgress={setProgress}
-        />
-      )}
     </div>
   );
 }

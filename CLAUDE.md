@@ -1,6 +1,6 @@
 # seto-blog Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-04-19
+Auto-generated from all feature plans. Last updated: 2026-04-20
 
 ## Active Technologies
 - TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing) (004-soundcloud-autofill-ordering)
@@ -9,6 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-04-19
 - Supabase PostgreSQL — new `tools` table (005-tools-ps2-grid)
 - TypeScript 5 / Next.js 16.2.1 App Router + React 19 + `@supabase/supabase-js` 2.x (existing, tools only), native Web APIs (HTMLAudioElement, SoundCloud Widget API) (010-public-release-prep)
 - Static files in `public/downloads/` for drum kit zip and cover ar (010-public-release-prep)
+- TypeScript 5 / Next.js 16.2.1 App Router + React 19 + Tailwind CSS v4 (`@theme` directive in `globals.css`), inline `style` props (pervasive — must be converted to Tailwind classes for responsive behavior) (011-mobile-responsiveness)
+- N/A — no schema changes (011-mobile-responsiveness)
 
 - TypeScript 5 / Next.js 16.2.1 App Router + React 19, Tailwind CSS v4 (`@theme` directive), `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (new) (003-admin-auth-ingestion)
 - Supabase (no schema changes in this feature) (002-beats-list-redesign)
@@ -31,16 +33,16 @@ npm test && npm run lint
 TypeScript 5 / Next.js 16.2.1 App Router: Follow standard conventions
 
 ## Recent Changes
+- 011-mobile-responsiveness: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19 + Tailwind CSS v4 (`@theme` directive in `globals.css`), inline `style` props (pervasive — must be converted to Tailwind classes for responsive behavior)
 - 010-public-release-prep: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19 + `@supabase/supabase-js` 2.x (existing, tools only), native Web APIs (HTMLAudioElement, SoundCloud Widget API)
 - 005-tools-ps2-grid: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing), `next/font/google` (existing mechanism)
-- 004-soundcloud-autofill-ordering: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19, `@supabase/supabase-js` 2.x (existing), `@supabase/ssr` (existing)
 
 
 <!-- MANUAL ADDITIONS START -->
 TypeScript 5 / Next.js 16.2.1: Follow standard conventions
 
 ## Recent Changes
-- 010-public-release-prep: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19 + `@supabase/supabase-js` 2.x (existing, tools only), native Web APIs (HTMLAudioElement, SoundCloud Widget API)
+- 011-mobile-responsiveness: Added TypeScript 5 / Next.js 16.2.1 App Router + React 19 + Tailwind CSS v4 (`@theme` directive in `globals.css`), inline `style` props (pervasive — must be converted to Tailwind classes for responsive behavior)
 
 
 <!-- MANUAL ADDITIONS START -->

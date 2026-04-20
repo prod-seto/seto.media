@@ -20,17 +20,20 @@ const mono: React.CSSProperties = { fontFamily: "'Unifont', monospace" };
 
 export interface SoundCloudPlayerRef {
   seek: (pct: number) => void;
+  toggle: () => void;
 }
 
 interface Props {
   url: string;
+  hideButton?: boolean;
   onPlayStateChange?: (playing: boolean) => void;
   onWaveformUrl?: (url: string) => void;
   onProgress?: (relativePosition: number) => void;
+  onReadyChange?: (ready: boolean) => void;
 }
 
 export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
-  function SoundCloudPlayer({ url, onPlayStateChange, onWaveformUrl, onProgress }, ref) {
+  function SoundCloudPlayer({ url, hideButton, onPlayStateChange, onWaveformUrl, onProgress, onReadyChange }, ref) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const widgetRef = useRef<any>(null);
     const durationRef = useRef<number>(0);
@@ -49,6 +52,9 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
           if (!isPlayingRef.current) seekingWhilePaused.current = true;
           widgetRef.current.seekTo(Math.floor(pct * durationRef.current));
         }
+      },
+      toggle() {
+        doToggle();
       },
     }));
 
@@ -69,6 +75,7 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
               if (sound?.waveform_url) onWaveformUrl?.(sound.waveform_url);
             });
             setReady(true);
+            onReadyChange?.(true);
           });
           widget.bind(window.SC.Widget.Events.PLAY, () => {
             if (seekingWhilePaused.current) {
@@ -109,14 +116,14 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
       };
     }, []);
 
-    function toggle() {
+    function doToggle() {
       if (!widgetRef.current || !ready) return;
       // User explicitly acting — cancel any pending seek suppression
       seekingWhilePaused.current = false;
-      if (!isPlaying && currentWidget && currentWidget !== widgetRef.current) {
+      if (!isPlayingRef.current && currentWidget && currentWidget !== widgetRef.current) {
         try { currentWidget.pause(); } catch { /* stale reference from prior navigation */ }
       }
-      if (!isPlaying) {
+      if (!isPlayingRef.current) {
         currentWidget = widgetRef.current;
         notifyReleasePlay();
         // Use explicit play()/pause() instead of toggle() so the call is deterministic
@@ -145,28 +152,29 @@ export const SoundCloudPlayer = forwardRef<SoundCloudPlayerRef, Props>(
           allow="autoplay"
         />
 
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          {/* Play / Pause */}
-          <button
-            onClick={toggle}
-            disabled={!ready}
-            className="tag"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "88px",
-              cursor: ready ? "pointer" : "default",
-              opacity: ready ? 1 : 0.35,
-              background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
-              borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
-              color: "#2A6094",
-              flexShrink: 0,
-              letterSpacing: "2px",
-            }}
-          >
-            {isPlaying ? "⏸ PAUSE" : "▶ PLAY"}
-          </button>
+        <div style={{ display: "flex", alignItems: "center", gap: hideButton ? 0 : "12px" }}>
+          {/* Play / Pause — omitted when parent renders an external button */}
+          {!hideButton && (
+            <button
+              onClick={doToggle}
+              disabled={!ready}
+              className="tag w-8 sm:w-[88px] shrink-0"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: ready ? "pointer" : "default",
+                opacity: ready ? 1 : 0.35,
+                background: isPlaying ? "rgba(90,158,212,0.20)" : "rgba(90,158,212,0.08)",
+                borderColor: isPlaying ? "rgba(90,158,212,0.70)" : "rgba(90,158,212,0.35)",
+                color: "#2A6094",
+                letterSpacing: "2px",
+              }}
+            >
+              <span className="sm:hidden">{isPlaying ? "⏸" : "▶"}</span>
+              <span className="hidden sm:inline">{isPlaying ? "⏸ PAUSE" : "▶ PLAY"}</span>
+            </button>
+          )}
 
           {/* Progress bar + times */}
           <div style={{ flex: 1 }}>
