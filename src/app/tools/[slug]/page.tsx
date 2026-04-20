@@ -15,8 +15,8 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
   if (!tool) notFound();
 
   return (
-    <main style={{ maxWidth: "960px", margin: "0 auto", padding: "48px 40px 80px" }}>
-      <div className="ghost-panel" style={{ padding: "32px 32px 40px 52px" }}>
+    <main className="max-w-[960px] mx-auto px-4 sm:px-10 pt-8 sm:pt-12 pb-20">
+      <div className="ghost-panel p-4 sm:pt-8 sm:pr-8 sm:pb-10 sm:pl-[52px]">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "28px" }}>
           <p className="type-label" style={{ color: "#5A8AAA" }}>
             producer tools

@@ -16,7 +16,7 @@ export default async function Home() {
   ]);
 
   return (
-    <main style={{ maxWidth: "960px", margin: "0 auto", padding: "32px 40px 80px" }}>
+    <main className="max-w-[960px] mx-auto px-4 sm:px-10 pt-8 pb-20">
       <HomeCatalog beats={beats ?? []} releases={releases ?? []} />
     </main>
   );
