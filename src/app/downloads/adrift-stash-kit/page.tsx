@@ -10,6 +10,7 @@ const CONTENTS = [
   "16 hi hats",
   "16 open hats",
   "16 snares",
+  "16 counter snares",
   "50 fx from Tony Hawk's American Wasteland \u00ae",
 ];
 
@@ -114,7 +115,33 @@ export default function AdriftStashKitPage() {
             </ul>
 
             {/* Download button */}
-            <div className="flex justify-end mt-1">
+            <div className="flex justify-end items-center gap-4 mt-1">
+              <div style={{ textAlign: "right" }}>
+                <span
+                  className="type-label"
+                  style={{
+                    ...mono,
+                    display: "block",
+                    fontSize: "11px",
+                    color: "#5A8AAA",
+                    letterSpacing: "2px",
+                  }}
+                >
+                  V2
+                </span>
+                <span
+                  className="type-label"
+                  style={{
+                    ...mono,
+                    display: "block",
+                    fontSize: "10px",
+                    color: "#8AAABB",
+                    letterSpacing: "1px",
+                  }}
+                >
+                  UPDATED 04.26.2026
+                </span>
+              </div>
               <a
                 href="/downloads/adrift-stash-kit.zip"
                 download
@@ -136,6 +163,7 @@ export default function AdriftStashKitPage() {
                 DOWNLOAD
               </a>
             </div>
+
           </div>
         </div>
       </div>
